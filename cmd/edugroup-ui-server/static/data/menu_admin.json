@@ -1,0 +1,13 @@
+[
+	{
+		"title": " Light",
+		"url": "/pages/light.html",
+		"icon": "fa fa-lightbulb-o fa-lg",
+		"children": []
+	},
+	{
+		"title": "Home",
+		"url": "/usercreater.html",
+		"icon": "fa fa-home fa-lg"
+	}
+]

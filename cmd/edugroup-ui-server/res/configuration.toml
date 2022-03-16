@@ -1,0 +1,60 @@
+[Service]
+Host = "localhost"
+Port = 4002
+Labels = []
+OpenMsg = "edgeX ui started"
+StaticResourcesPath = "./static"
+
+#Using an default memory db automatically if not configed here.
+[Database]
+Host = "localhost"
+Name = "edugroup-ui-go"
+Port = 27017
+Username = "su"
+Password = "su"
+  [Database.Scheme]
+  User = "user"
+
+[Clients]
+    [Clients.CoreData]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 59880
+    PathPrefix = "/core-data"
+
+    [Clients.Metadata]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 59881
+    PathPrefix = "/core-metadata"
+
+    [Clients.Command]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 59882
+    PathPrefix = "/core-command"
+
+    [Clients.Notifications]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 59860
+    PathPrefix = "/support-notification"
+
+    [Clients.Scheduler]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 59861
+    PathPrefix = "/support-scheduler"
+
+    [Clients.RulesEngine]
+    Protocol = 'http'
+    Host = 'localhost'
+    Port = 48075
+    PathPrefix = "/rules-engine"
+
+[Registry]
+Host = "localhost"
+Port = 8500
+Type = "consul"
+ConfigRegistryStem="edgex/appservices/"
+ServiceVersion="1.0"

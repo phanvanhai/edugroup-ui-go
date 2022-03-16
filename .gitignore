@@ -1,0 +1,12 @@
+.idea/
+vendor
+*.exe
+go.sum
+*.DS_Store
+cmd/edugroup-ui-server/edugroup-ui-server
+*.snap
+prime/
+squashfs-root/
+coverage.out
+VERSION
+.gitmessage

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <!-- device start -->
+    <div id="light-device-main">
+        <div id="light-device-list" style="position:relative;">
+            <!-- device list start -->
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Devices &nbsp;
+                        <button class="btn btn-info fa fa-refresh" onclick="lightApp.loadDevice();"></button>
+                        <button class="btn btn-success fa fa-plus" onclick="lightApp.addDevice();"></button>
+                    </h3>
+                </div>
+                <div class="panel panel-default" style="border:none;outline:none;margin:0;">
+                </div>
+
+                <div class="panel-body" style="padding:0;overflow:auto;">
+                    <div id="light-device-list-table">
+                        <table class="table table-responsive table-hover table-striped">
+                            <thead>
+                                <tr class="active">
+                                    <th style="width: 50px;"></th>
+                                    <th style="width: 50px;"></th>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Name</th>
+                                    <th>Description</th>                                    
+                                    <th>Created Time</th>
+                                    <th>Modified Time</th>                                    
+                                    <th>Commands</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot style="display:none;">
+                                <tr align="center">
+                                    <td colspan=13>No Device.</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- device list end -->
+        </div>
+
+        <!-- device update or add start -->
+        <div id='light-device-update-or-add' style="display:none; ">
+            <div class="panel panel-success ">
+                <div class="panel-heading ">
+                    <h3 class="panel-title ">Add or Update Scenario</h3>
+                </div>
+                <div class="panel panel-default " style="border:none;outline:none;margin:0; ">
+                    <div class="panel-heading " style="padding:5px 2px; ">
+                        <div class="edgexIconBtn add-device " onclick="lightApp.uploadDevice('new'); ">
+                            <i class="fa fa-check fa-lg " aria-hidden="true "></i>
+                        </div>
+                        <div class="edgexIconBtn update-device " style="display:none; " onclick="lightApp.uploadDevice(); ">
+                            <i class="fa fa-check fa-lg " aria-hidden="true "></i>
+                        </div>
+                        <div class="edgexIconBtn " onclick="lightApp.cancelAddOrUpdateDevice() ">
+                            <i class="fa fa-close fa-lg " aria-hidden="true "></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body " style="padding:0;width:100%;overflow:auto; ">
+                    <form class='edgexfoundry-device-form' style="width:100%; ">
+                        <fieldset>
+                            <legend>Device</legend>
+                            <table>
+                                <tr>
+                                    <td>ID</td>
+                                    <td class="col-sm-6 "><input class='form-control' type='text' id='light-deviceID' disabled value=''></td>
+                                    <td style="width: 50px; "></td>
+                                    <td>Name</td>
+                                    <td class="col-sm-6 "><input class='form-control' type='text' id='light-deviceName' value=''></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Description</td>
+                                    <td class="col-sm-6 "><input class='form-control' type='text' id='light-deviceDescription' value=''></td>
+                                    <td style="width: 50px; "></td>
+                                    <td>Labels</td>
+                                    <td class="col-sm-6 "><input class='form-control' type='text' id='light-deviceLabels' placeholder='label1,label2' value=''></td>
+                                </tr>
+                                <tr>
+                                    <td>AdminState</td>
+                                    <td class="col-sm-6">
+                                        <select id='light-adminState' name="deviceAdminState">
+                                             <option>UNLOCKED</option>
+                                             <option>LOCKED</option>
+                                         </select>
+                                    </td>
+                                    <td style="width: 50px; "></td>
+                                    <td>OperatingState</td>
+                                    <td class="col-sm-6">
+                                        <select id='light-operatingState' name="deviceOperatingState">
+                                             <option>ENABLED</option>
+                                             <option>DISABLED</option>
+                                         </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Protocols</legend>
+                            <table>
+                                <tr>
+                                    <td>LinkKey</td>
+                                    <td class="col-sm-6"><input class='form-control' type='text' id='light-linkKey' value=''></td>
+                                    <td style="width: 50px;"></td>
+                                    <td>MAC</td>
+                                    <td class="col-sm-6"><input class='form-control' type='text' id='light-mac' placeholder='01:23:45:67:89:AB:CD:EF' value=''></td>
+                                </tr>
+                                <tr>
+                                    <td>NetworkID</td>
+                                    <td class="col-sm-6"><input class='form-control' type='text' id='light-networkID' value=''></td>
+                                </tr>
+                                <tr style="display:none;">
+                                    <td>Type</td>
+                                    <td><input class='form-control' type='text' id='light-type' value=''></td>
+                                    <td style="width: 50px;"></td>
+                                    <td>VersionConfig</td>
+                                    <td><input class='form-control' type='text' id='light-versionConfig' value=''></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- device update or add end -->
+
+        <!-- command start -->
+        <div id="light-command-main" hidden>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <button class="btn btn-warning fa fa-arrow-left" onclick="lightApp.cancelCommand();"></button> &nbsp; &nbsp;<i id="light-currentDevice"></i>
+                    </h3>
+                </div>
+                <div class="form-group">
+                    <fieldset>
+                        <legend>Light </legend>
+                        <div class="form-inline">
+                            <label for="light-onoff-status">On-Off :</label>
+                            <!-- <input id="light-onoff-status" type="text" style="width: 100px;"> -->
+                            <select id='light-onoff-status' name="light-onoff-status">
+                                <option value="" selected>Unknow</option>
+                                <option value="true">On</option>
+                                <option value="false">Off</option>
+                            </select>
+                            <button class="btn btn-info fa fa-refresh" onclick="lightApp.command_get_onoff();"></button>&nbsp;&nbsp;
+                            <button class="btn btn-success fa fa-check" onclick="lightApp.command_set_onoff();"></button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="light-dimming-status">Dimming :</label>
+                            <input type="text" name="" id="light-dimming-status" style="width: 100px;">
+                            <button class="btn btn-info fa fa-refresh" onclick="lightApp.command_get_dimming();"></button>&nbsp;&nbsp;
+                            <button class="btn btn-success fa fa-check" onclick="lightApp.command_set_dimming();"></button>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Sensor </legend>
+                        <div class="form-inline">
+                            <label for="sensor-measure-status">Light Sensor Value :</label>
+                            <input type="text" name="" id="sensor-measure-status" style="width: 100px;">
+                            <button class="btn btn-info fa fa-refresh" onclick="lightApp.command_get_measure();"></button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="light-reportTime-status">Report Time :</label>
+                            <input type="text" name="" id="light-reportTime-status" style="width: 100px;">
+                            <button class="btn btn-info fa fa-refresh" onclick="lightApp.command_get_reportTime();"></button>&nbsp;&nbsp;
+                            <button class="btn btn-success fa fa-check" onclick="lightApp.command_set_reportTime();"></button>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Schedules</legend>
+                        <fieldset>
+                            <legend>OnOff Schedules</legend>
+                            <div>
+                                <div class="form-inline">
+                                    <button class="btn btn-info fa fa-refresh" onclick="lightApp.load_onoff_schedule();"></button>
+                                    <button class="btn btn-warning fa fa-plus" onclick="lightApp.addRow_onoff_schedule();"></button>
+                                    <button class="btn btn-success fa fa-check" onclick="lightApp.submit_onoff_schedule();"></button>
+                                </div>
+
+                                <div class="panel-body" style="padding:0;">
+                                    <div id="light-onoffScheduleTable">
+                                        <table class="table table-responsive table-hover table-striped" ">
+                                            <thead>
+                                                <tr class="active ">
+                                                    <th></th>
+                                                    <th>Owner</th>
+                                                    <th>Time</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            <tfoot style="display:none; ">
+                                                <tr align='center'>
+                                                    <td colspan=13>No Schedule.</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Dimming Schedules</legend>
+                            <div>
+                                <div class="form-inline ">
+                                    <button class="btn btn-info fa fa-refresh " onclick="lightApp.load_dimming_schedule(); "></button>
+                                    <button class="btn btn-warning fa fa-plus " onclick="lightApp.addRow_dimming_schedule(); "></button>
+                                    <button class="btn btn-success fa fa-check " onclick="lightApp.submit_dimming_schedule(); "></button>
+                                </div>                                
+
+                                <div class="panel-body " style="padding:0; ">
+                                    <div id='light-dimmingScheduleTable'>
+                                        <table class="table table-responsive table-hover table-striped "">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th></th>
+                                                    <th>Owner</th>
+                                                    <th>Time</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            <tfoot style="display:none;">
+                                                <tr align="center">
+                                                    <td colspan=13>No Schedule.</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Relations</legend>
+                        <fieldset>
+                            <legend>Groups &nbsp;<i class="fa fa-refresh" onclick="lightApp.load_group() "></i></legend>
+                            <div id="light-groupTable">
+                                <table class="table table-responsive table-hover table-striped">
+                                    <thead>
+                                        <tr class="active">
+                                            <th style="width: 5px;"></th>
+                                            <th style="width: 10px;">#</th>
+                                            <th style="width: 200px;">Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot style="display:none;">
+                                        <tr align="center">
+                                            <td colspan=13>No Group.</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Scenario &nbsp;<i class="fa fa-refresh" onclick="lightApp.load_scenario()"></i></legend>
+                            <div id="light-scenarioTable">
+                                <table class="table table-responsive table-hover table-striped">
+                                    <thead>
+                                        <tr class="active">
+                                            <th></th>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Command</th>
+                                            <th>Body</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot style="display:none;">
+                                        <tr align="center">
+                                            <td colspan=13>No Scenario.</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- command end -->
+    </div>
+</body>
+
+<script src="/js/light.js"></script>
+
+</html>
