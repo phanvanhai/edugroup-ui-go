@@ -82,7 +82,7 @@ $(document).ready(function () {
 		for (var i = 0; i < data.length; i++) {
 			var menu = data[i];
 			var subMenu = menu.children;
-			var str = '<li url="' + menu.url + '" tabindex=' + menu.title + ' ><i class="fa fa-caret-right" style="visibility:hidden"></i><i class="fa fa-circle" style="color: green"></i><i class="' + menu.icon + '"></i><span>' + menu.title + '</span></li>';
+			var str = '<li url="' + menu.url + '" tabindex=' + menu.title + ' ><i class="fa fa-caret-right" style="visibility:hidden"></i><i class="' + menu.icon + '"></i><span>' + menu.title + '</span></li>';
 			if (subMenu != null && subMenu.length != 0) {
 				var second_level_menu = "";
 				for (var j = 0; j < subMenu.length; j++) {

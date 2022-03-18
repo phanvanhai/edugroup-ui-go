@@ -17,6 +17,7 @@
 package core
 
 const (
+	AdminName        = "admin"
 	ContentTypeKey   = "Content-Type"
 	JsonContentType  = "application/json"
 	RedirectHttpCode = 302

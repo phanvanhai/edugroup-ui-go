@@ -17,8 +17,8 @@
 @charset "UTF-8";
 
 :root {
-  --main-black-color:#24292e;//黑色
-  --main-green-color:#339933;//绿色
+  --main-black-color:#24292e;
+  --main-green-color:#339933;
   --main-hover-color:hsla(0,0%,100%,.75);
 }
 
@@ -28,7 +28,6 @@
           box-sizing: border-box;
 }
 
-/*滚动条 start *//* srcoll bar*/
 ::-webkit-scrollbar {
   /*width: 10px;
   height: 4px;*/
@@ -37,13 +36,11 @@
   background-color: #DCDCDC!important;
 }
 
-/*定义滚动条轨道 内阴影+圆角*//* srcoll bar*/
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   background: #fff ;
 }
 
-/*定义滑块 内阴影+圆角*//* srcoll bar*/
 ::-webkit-scrollbar-thumb {
   /*border-radius: 3px;*/
   border-radius: 6px;
@@ -52,7 +49,6 @@
 }
 /* srcoll bar*/
 ::-webkit-scrollbar-thumb:hover {
-  /*border-radius: 3px;*/
   border-radius: 6px;
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   background-color:rgba(220,220,220, 1);
@@ -85,7 +81,7 @@
 .headbar {
 	position: fixed;
 	height: 60px;
-	background-color: #4d394b;
+	background-color: whitesmoke;
 	top:0;
 	left:0;
 	right:0;
@@ -112,14 +108,14 @@
 .headbar li.title {
 	font-weight: bold;
 	font-size: medium;
-	color: white;
+	color: gray;
 }
 
 .headbar li.user , li.notification , li.logout{
 	margin-right:20px;
 	float: right;
 	right:10px;
-	color: white;
+	color: gray;
 }
 
 .headbar li.notification:hover , li.user:hover , li.logout:hover {
@@ -144,7 +140,7 @@
 	/* border: 1px solid red; *//* debugger */
   /*background-color: #dff0d8;*/
   /*background-color: #4d394b;*/
-  background-color: black;
+  background-color: grey;
 
 }
 
@@ -183,11 +179,7 @@
 .sidebar div.second_level ul li {
   text-indent: 30%;
 }
-.sidebar div  ul  li:hover {
-  color: rgb(51, 153, 51);
-  background-color:rgba(51, 153, 51, 0.4) !important;
-	cursor:default;
-}
+
 
 .center {
   position: absolute;

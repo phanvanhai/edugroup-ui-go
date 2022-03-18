@@ -81,9 +81,21 @@ func AuthFilter(h http.Handler) http.Handler {
 			token = r.Header.Get(SessionTokenKey)
 		}
 
-		_, isValid := TokenCache[token]
+		user, isValid := TokenCache[token]
 
 		if (token == "") || !(isValid) {
+			if r.Header.Get(AjaxRequestHeader) != "" &&
+				r.Header.Get(AjaxRequestHeader) == AjaxRequestIdentifier {
+				w.WriteHeader(RedirectHttpCode)
+				w.Write([]byte(NoAuthorizationMsg))
+				return
+			}
+			http.Redirect(w, r, LoginHtmlPage, RedirectHttpCode)
+			return
+		}
+
+		// Some API only for Admin
+		if strings.Contains(path, "api/v1/user") && user.Name != AdminName {
 			if r.Header.Get(AjaxRequestHeader) != "" &&
 				r.Header.Get(AjaxRequestHeader) == AjaxRequestIdentifier {
 				w.WriteHeader(RedirectHttpCode)

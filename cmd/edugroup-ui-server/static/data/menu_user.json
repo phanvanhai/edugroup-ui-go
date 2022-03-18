@@ -1,8 +1,8 @@
 [
 	{
-		"title": " Light",
+		"title": "Thiết bị",
 		"url": "/pages/light.html",
-		"icon": "fa fa-lightbulb-o fa-lg",
+		"icon": "fa fa-home fa-lg",
 		"children": []
 	}
 ]
