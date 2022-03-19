@@ -4,5 +4,10 @@
 		"url": "/pages/light.html",
 		"icon": "fa fa-home fa-lg",
 		"children": []
+	},
+	{
+		"title": "Đăng xuất",
+		"url": "/logout.html",
+		"icon": "fa fa-sign-out fa-lg"
 	}
 ]

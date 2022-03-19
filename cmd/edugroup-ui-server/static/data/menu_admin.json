@@ -9,5 +9,10 @@
 		"title": "Tài khoản",
 		"url": "/usercreater.html",
 		"icon": "fa fa-user fa-lg"
+	},
+	{
+		"title": "Đăng xuất",
+		"url": "/logout.html",
+		"icon": "fa fa-sign-out fa-lg"
 	}
 ]

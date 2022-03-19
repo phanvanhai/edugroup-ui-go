@@ -73,6 +73,15 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, errors.NewErrParserJsonBody().Error(), http.StatusBadRequest)
 		return
 	}
+	oldUser, err := repository.GetUserRepos().Select(string(user.Id))
+	if err != nil {
+		http.Error(w, errors.NewErrWriteDatabase().Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if user.Name == "" {
+		user.Name = oldUser.Name
+	}
 
 	err = repository.GetUserRepos().Update(user)
 	if err != nil {

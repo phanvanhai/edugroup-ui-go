@@ -47,29 +47,22 @@ $(document).ready(function () {
 	});
 
 	//logout control
-	$(".headbar li.logout").on("click", function () {
-		$.ajax({
-			url: '/api/v1/auth/logout?ran=' + Math.random(),
-			type: 'GET',
-			success: function () {
-				window.location.href = '/login.html?ran=' + Math.random();
-			}
-		});
-	});
+	// $(".headbar li.logout").on("click", function () {
+	// 	$.ajax({
+	// 		url: '/api/v1/auth/logout?ran=' + Math.random(),
+	// 		type: 'GET',
+	// 		success: function () {
+	// 			window.location.href = '/login.html?ran=' + Math.random();
+	// 		}
+	// 	});
+	// });
 
-	//user information control
-	$(".headbar li.user").on("click", function () {
-		$(".main_msgbox").load("/pages/userInfo.html")
-		$(".main_msgbox").animate({ "right": "0" }, "fast");
-		$(".main_shelter").show("fast");
-	});
-
-	//notification control
-	$(".headbar li.notification").on("click", function () {
-		// $(".main_msgbox").load("")
-		// $(".main_msgbox").animate({"right":"0"},"fast");
-		// $(".main_shelter").show("fast");
-	});
+	// //user information control
+	// $(".headbar li.user").on("click", function () {
+	// 	$(".main_msgbox").load("/pages/userInfo.html")
+	// 	$(".main_msgbox").animate({ "right": "0" }, "fast");
+	// 	$(".main_shelter").show("fast");
+	// });
 
 	//globe shelter control
 	$(".main_shelter").on("click", function () {
