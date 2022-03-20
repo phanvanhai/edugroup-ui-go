@@ -1,144 +1,124 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <link href="/vendors/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="/vendors/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <link href="/vendors/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="/vendors/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 
-    <link href="/css/light.css" rel="stylesheet" />
-    </style>
+        <link href="/css/light.css" rel="stylesheet" />
+    </head>
 
-</head>
+    <body>
+        <!-- <div id="myimage"></div> -->
+        <!-- device start -->
+        <div id="light-device-main">
+            <div id="light-device-list" style="position:relative;">
+                <!-- device list start -->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Devices &nbsp;
+                            <button class="btn btn-info fa fa-refresh" onclick="lightApp.loadDevice();"></button>
+                            <button class="btn btn-success fa fa-plus" onclick="lightApp.addDevice();"></button>
+                        </h3>
+                    </div>
+                    <div class="panel panel-default" style="border:none;outline:none;margin:0;">
+                    </div>
 
-<body>
-    <!-- <div id="myimage"></div> -->
-    <!-- device start -->
-    <div id="light-device-main">
-        <div id="light-device-list" style="position:relative;">
-            <!-- device list start -->
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Devices &nbsp;
-                        <button class="btn btn-info fa fa-refresh" onclick="lightApp.loadDevice();"></button>
-                        <button class="btn btn-success fa fa-plus" onclick="lightApp.addDevice();"></button>
-                    </h3>
+                    <div class="panel-body" style="padding:0;overflow:auto;">
+                        <div id="light-device-list-table">
+                            <table class="table table-responsive table-hover table-striped">
+                                <thead>
+                                    <tr class="active">
+                                        <th style="width: 50px;">STT</th>
+                                        <th>Tên</th>
+                                        <th>Thông tin</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhập</th>
+                                        <th>Giám sát</th>
+                                        <th style="width: 50px;"></th>
+                                        <th style="width: 50px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel panel-default" style="border:none;outline:none;margin:0;">
-                </div>
+                <!-- device list end -->
+            </div>
 
-                <div class="panel-body" style="padding:0;overflow:auto;">
-                    <div id="light-device-list-table">
-                        <table class="table table-responsive table-hover table-striped">
-                            <thead>
-                                <tr class="active">
-                                    <th style="width: 50px;">STT</th>
-                                    <th>Tên</th>
-                                    <th>Thông tin</th>
-                                    <th>Ngày tạo</th>
-                                    <th>Ngày cập nhập</th>
-                                    <th>Giám sát</th>
-                                    <th style="width: 50px;"></th>
-                                    <th style="width: 50px;"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <!-- <tfoot style="display:none;">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Device 1</td>
-                                        <td>Device 1</td>
-                                        <td>Device 1</td>
-                                        <td>Device 1</td>
-                                        <td><button class="btn btn-info fa fa-terminal"
-                                                onclick="show_detail()"></button></td>
-                                        <td class="device-edit-icon"><input type="hidden" value="">
-                                            <div class="btn btn-warning fa fa-edit" onclick="edit_device()"></div>
-                                        </td>
-                                        <td class="device-delete-icon" id="device-delete"><input
-                                                class="device-delete-icon" type="hidden" value="">
-                                            <div class="btn btn-danger fa fa-trash"></div>
+            <!-- device update or add start -->
+            <div id='light-device-update-or-add' style="display:none; ">
+                <div class="panel panel-success ">
+                    <div class="panel-heading " id='update-add-title'></div>
+                    <div class="panel panel-default " style="border:none;outline:none;margin:0; ">
+                        <div class="panel-heading " style="padding:5px 2px; ">
+                            <div class="edgexIconBtn add-device " onclick="lightApp.uploadDevice('new'); ">
+                                <i class="btn btn-success fa fa-check fa-lg " aria-hidden="true "></i>
+                            </div>
+                            <div class="edgexIconBtn update-device " style="display:none; "
+                                onclick="lightApp.uploadDevice(); ">
+                                <i class="btn btn-warning fa fa-check fa-lg " aria-hidden="true "></i>
+                            </div>
+                            <div class="edgexIconBtn " onclick="lightApp.cancelAddOrUpdateDevice() ">
+                                <i class="btn btn-danger fa fa-close fa-lg " aria-hidden="true "></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-body " style="padding:0;width:100%;overflow:auto; ">
+                        <form class='edgexfoundry-device-form' id='add-or-update-device' style="width:100%; ">
+                            <fieldset>
+                                <legend>Thiết bị</legend>
+                                <table>
+                                    <tr style="display:none;">
+                                        <td>Id</td>
+                                        <td hidden><input class='form-control' type='text' id='light-deviceID' value=''>
                                         </td>
                                     </tr>
-                                </tfoot> -->
-                            <!-- <td colspan=13>Không có thiết bị</td> -->
-                        </table>
+                                    <tr>
+                                        <td class="col-sm-2">Tên</td>
+                                        <td><input class='form-control' type='text' id='light-deviceName'
+                                                placeholder='Tên phải duy nhất trong hệ thống' value=''></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-sm-2">User ID</td>
+                                        <td><input class='form-control' type='text' id='light-deviceLabels'
+                                                placeholder='Id của người dùng sở hữu' value=''></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-sm-2">Mã thiết bị</td>
+                                        <td><input class='form-control' type='text' id='light-mac'
+                                                placeholder='ví dụ: 58BF25330B1C' value=''></td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Thông tin thiết bị</legend>
+                                <textarea id='light-deviceDescription' style="width:100%;" rows="10"></textarea>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- device list end -->
-        </div>
+            <!-- device update or add end -->
 
-        <!-- device update or add start -->
-        <div id='light-device-update-or-add' style="display:none; ">
-            <div class="panel panel-success ">
-                <div class="panel-heading " id='update-add-title'></div>
-                <div class="panel panel-default " style="border:none;outline:none;margin:0; ">
-                    <div class="panel-heading " style="padding:5px 2px; ">
-                        <div class="edgexIconBtn add-device " onclick="lightApp.uploadDevice('new'); ">
-                            <i class="btn btn-success fa fa-check fa-lg " aria-hidden="true "></i>
-                        </div>
-                        <div class="edgexIconBtn update-device " style="display:none; "
-                            onclick="lightApp.uploadDevice(); ">
-                            <i class="btn btn-warning fa fa-check fa-lg " aria-hidden="true "></i>
-                        </div>
-                        <div class="edgexIconBtn " onclick="lightApp.cancelAddOrUpdateDevice() ">
-                            <i class="btn btn-danger fa fa-close fa-lg " aria-hidden="true "></i>
-                        </div>
+            <!-- command start -->
+            <div id="light-command-main" style="position:relative;" hidden>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <button class="btn btn-warning fa fa-arrow-left"
+                                onclick="lightApp.cancelCommand();"></button>
+                            &nbsp; &nbsp;<i id="light-currentDevice"></i>
+                        </h3>
                     </div>
-                </div>
-
-                <div class="panel-body " style="padding:0;width:100%;overflow:auto; ">
-                    <form class='edgexfoundry-device-form' id='add-or-update-device' style="width:100%; ">
-                        <fieldset>
-                            <legend>Thiết bị</legend>
-                            <table>
-                                <tr style="display:none;">
-                                    <td>Id</td>
-                                    <td hidden><input class='form-control' type='text' id='light-deviceID' value=''>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-sm-2">Tên</td>
-                                    <td><input class='form-control' type='text' id='light-deviceName'
-                                            placeholder='Tên phải duy nhất trong hệ thống' value=''></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="col-sm-2">User ID</td>
-                                    <td><input class='form-control' type='text' id='light-deviceLabels'
-                                            placeholder='Id của người dùng sở hữu' value=''></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="col-sm-2">Mã thiết bị</td>
-                                    <td><input class='form-control' type='text' id='light-mac'
-                                            placeholder='ví dụ: 58BF25330B1C' value=''></td>
-                                </tr>
-                            </table>
-                        </fieldset>
-                        <fieldset>
-                            <legend>Thông tin thiết bị</legend>
-                            <textarea id='light-deviceDescription' style="width:100%;" rows="10"></textarea>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- device update or add end -->
-
-        <!-- command start -->
-        <div id="light-command-main" style="position:relative;" hidden>
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <button class="btn btn-warning fa fa-arrow-left" onclick="lightApp.cancelCommand();"></button>
-                        &nbsp; &nbsp;<i id="light-currentDevice"></i>
-                    </h3>
-                </div>
-                <!-- <fieldset>
+                    <!-- <fieldset>
                         <legend>Trang thai van </legend>
                         <div class="form-inline">
                             <label>Van ap thap</label>
@@ -214,106 +194,111 @@
                         <label>Cong suat tieu thu (kWh)</label>
                         <input id='monitor_power_kwh' type="text" disabled>
                     </fieldset> -->
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-md-4 container">
-                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
-                                <table style="margin: 0 auto;">
-                                    <tr style="border-bottom:2px solid white">
-                                        <th colspan="5" class="text-center">LƯU LƯỢNG</th>
-                                        <br>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-sm-2">Bình 1</td>
-                                        <td class="col-sm-2">Bình 2</td>
-                                        <td class="col-sm-2">Bình 3</td>
-                                        <td class="col-sm-2">Bình 4</td>
-                                        <td class="col-sm-2">Bình 5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12.4 l/p</td>
-                                        <td>23.6 l/p</td>
-                                        <td>11.0</td>
-                                        <td>5</td>
-                                        <td>0</td>
-                                    </tr>
-                                </table>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-4 container">
+                                <div class="card text-white bg-success mb-3"
+                                    style="border-radius: 10px; margin-top: 3vh;">
+                                    <table style="margin: 0 auto;">
+                                        <tr style="border-bottom:2px solid white">
+                                            <th colspan="5" class="text-center">LƯU LƯỢNG</th>
+                                            <br>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-2">Bình 1</td>
+                                            <td class="col-sm-2">Bình 2</td>
+                                            <td class="col-sm-2">Bình 3</td>
+                                            <td class="col-sm-2">Bình 4</td>
+                                            <td class="col-sm-2">Bình 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12.4 l/p</td>
+                                            <td>23.6 l/p</td>
+                                            <td>11.0</td>
+                                            <td>5</td>
+                                            <td>0</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="card text-white bg-dark mb-3" style="border-radius: 10px; margin-top: 3vh;">
+                                    <table style="margin: 0 auto;">
+                                        <tr style="border-bottom:2px solid white">
+                                            <th colspan="4" class="text-center">TDS</th>
+                                            <br>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-3">Bình 1</td>
+                                            <td class="col-sm-3">Bình 2</td>
+                                            <td class="col-sm-3">Bình 3</td>
+                                            <td class="col-sm-3">Bình 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12.4 ppm</td>
+                                            <td>23.6 ppm</td>
+                                            <td>11.0 ppm</td>
+                                            <td>5 ppm</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="relay">
+                                    <button type="button" id="button_first" class="btn btn-success btn-circle btn-sm"
+                                        onclick="btn_first()">BẬT</button>
+                                </div>
                             </div>
-                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
-                                <table style="margin: 0 auto;">
-                                    <tr style="border-bottom:2px solid white">
-                                        <th colspan="4" class="text-center">TDS</th>
-                                        <br>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-sm-3">Bình 1</td>
-                                        <td class="col-sm-3">Bình 2</td>
-                                        <td class="col-sm-3">Bình 3</td>
-                                        <td class="col-sm-3">Bình 4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12.4 ppm</td>
-                                        <td>23.6 ppm</td>
-                                        <td>11.0 ppm</td>
-                                        <td>5 ppm</td>
-                                    </tr>
-                                </table>
+                            <div class="form-group col-md-4 container">
+                                <div class="card text-white bg-danger mb-3"
+                                    style="border-radius: 10px; margin-top: 3vh;">
+                                    <table style="margin: 0 auto;">
+                                        <tr style="border-bottom:2px solid white">
+                                            <th colspan="3" class="text-center">CÔNG TƠ NƯỚC</th>
+                                            <br>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-4">Vào</td>
+                                            <td class="col-sm-4"></td>
+                                            <td class="col-sm-4">Ra</td>
+                                        </tr>
+                                        <tr>
+                                            <td>123 m3</td>
+                                            <td></td>
+                                            <td>124 m3</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="card text-white bg-light mb-3"
+                                    style="border-radius: 10px; margin-top: 3vh;">
+                                    <table style="margin: 0 auto;">
+                                        <tr style="border-bottom:2px solid white">
+                                            <th colspan="2" class="text-center">CÔNG TƠ ĐIỆN</th>
+                                            <br>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-3">Điện năng tiêu thụ</td>
+                                            <td class="col-sm-3">Công suất tiêu thụ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1357 kW</td>
+                                            <td>0.04 kWh</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="valve">
+                                    <button type="button" id="button_second" class="btn btn-danger btn-circle btn-sm"
+                                        onclick="btn_second()"><p>SỤC/XẢ</p></button>
+                                </div>
                             </div>
-                            <div class="relay">
-                                <button type="button" class="btn btn-success btn-circle btn-sm">Bật</button>
+                            <div class="form-group col-md-4 container">
+                                <img src="../data/monitor.png" class="img-responsive" />
                             </div>
                         </div>
-                        <div class="form-group col-md-4 container">
-                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
-                                <table style="margin: 0 auto;">
-                                    <tr style="border-bottom:2px solid white">
-                                        <th colspan="3" class="text-center">CÔNG TƠ NƯỚC</th>
-                                        <br>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-sm-4">Vào</td>
-                                        <td class="col-sm-4"></td>
-                                        <td class="col-sm-4">Ra</td>
-                                    </tr>
-                                    <tr>
-                                        <td>123 m3</td>
-                                        <td></td>
-                                        <td>124 m3</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
-                                <table style="margin: 0 auto;">
-                                    <tr style="border-bottom:2px solid white">
-                                        <th colspan="2" class="text-center">CÔNG TƠ ĐIỆN</th>
-                                        <br>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-sm-3">Điện năng tiêu thụ</td>
-                                        <td class="col-sm-3">Công suất tiêu thụ</td>                                     
-                                    </tr>
-                                    <tr>
-                                        <td>1357 kW</td>
-                                        <td>0.04 kWh</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="valve">
-                                <button type="button" class="btn btn-danger btn-circle btn-sm">Sục/Xả</button>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4 container">
-                            <img src="../data/monitor.png" class="img-responsive" />
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+            <!-- command end -->
         </div>
-        <!-- command end -->
-    </div>
-</body>
+    </body>
 
-<script src="/js/light.js">
-</script>
+    <script src="/js/light.js">
+    </script>
 
 </html>

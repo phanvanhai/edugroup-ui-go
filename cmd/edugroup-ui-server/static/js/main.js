@@ -32,17 +32,16 @@ $(document).ready(function () {
 	//get menu data dynamically.
 	var role = window.sessionStorage.getItem("role")
 	var url_menu = "/data/menu_user.json"
-	if (role == "admin")
-	{
+	if (role == "admin") {
 		url_menu = "/data/menu_admin.json"
 	}
-	$.ajax({		
+	$.ajax({
 		url: url_menu,
 		type: "GET",
 		success: function (data) {
 			var menu = eval(data);
 			menuRender(menu);
-            $('.sidebar ul li:first').click()
+			$('.sidebar ul li:first').click()
 		}
 	});
 
@@ -88,27 +87,35 @@ $(document).ready(function () {
 				$(this).next("div.second_level").slideToggle("normal");
 				return;
 			}
-			// $(".sidebar li").not($(this)).css({color:'',borderBottom: '',borderBottomColor:''});
-			// $(this).css({color:'#339933',borderBottom: '2px solid',borderBottomColor:'#339933'});
-			// $(".sidebar li").not($(this)).css({ color: '', borderBottom: '', borderBottomColor: '', backgroundColor: '' });
-			// $(this).css({ color: '#339933', borderBottom: '', backgroundColor: 'rgba(51, 153, 51, 0.5)' });
-			//if current node is leaf node，load html resource.
 			var tabindex = $(this).attr("tabindex");
 			var url = $(this).attr("url");
-			createTabByTitle(tabindex, url);
+			if (url == "/logout.html") {
+				var isLogout = false;
+				console.log("logout");
+				$.ajax({
+					url: '/api/v1/auth/logout?ran=' + Math.random(),
+					type: 'GET',
+					success: function () {
+						isLogout = true;
+						window.location.href = '/login.html?ran=' + Math.random();
+					}
+				});
+			} else {
+				createTabByTitle(tabindex, url);
+			}
 		});
 	}
 
 	function createTabByTitle(title, url) {
 		var tabTitle = '<a href="#edgex-foundry-tab-' + title + '" aria-controls="edgex-foundry-tab-' + title + '" role="tab" data-toggle="tab"></a>';
-        $("#edgex-foundry-tabs-index-main").html(tabTitle);
+		$("#edgex-foundry-tabs-index-main").html(tabTitle);
 
-        var tabContent = '<div role="tabpanel" class="tab-pane" id="edgex-foundry-tab-' + title + '">';
-        tabContent += '</div>';        
-        $("#edgex-foundry-tabs-content").html(tabContent);
+		var tabContent = '<div role="tabpanel" class="tab-pane" id="edgex-foundry-tab-' + title + '">';
+		tabContent += '</div>';
+		$("#edgex-foundry-tabs-content").html(tabContent);
 
-        $("#edgex-foundry-tabs-content #edgex-foundry-tab-" + title).load(url);
-        $("a[href='#edgex-foundry-tab-" + title + "']").tab('show');
+		$("#edgex-foundry-tabs-content #edgex-foundry-tab-" + title).load(url);
+		$("a[href='#edgex-foundry-tab-" + title + "']").tab('show');
 	}
 
 });

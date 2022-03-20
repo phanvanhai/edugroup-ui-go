@@ -93,14 +93,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var user domain.User
+	var user map[string]string
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, errors.NewErrParserJsonBody().Error(), http.StatusBadRequest)
 		return
 	}
 
-	err = repository.GetUserRepos().Delete(string(user.Id))
+	err = repository.GetUserRepos().Delete(string(user["id"]))
 	if err != nil {
 		http.Error(w, errors.NewErrWriteDatabase().Error(), http.StatusInternalServerError)
 		return

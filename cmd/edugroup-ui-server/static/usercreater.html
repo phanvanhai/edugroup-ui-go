@@ -16,266 +16,307 @@
  *******************************************************************************
  -->
 
- <!DOCTYPE html>
- <html>
- 
-     <head>
-         <meta charset="UTF-8">
-         <title>User Creater</title>
-         <link rel="icon" href="data:;base64,=">
-         <link href="/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-         <link href="/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-         <link href="/css/edgexfoundry.css" rel="stylesheet">
-         <style>
-             * {
-                 -webkit-box-sizing: border-box;
-                 -moz-box-sizing: border-box;
-                 box-sizing: border-box;
-             }
- 
-             .show_users {
-                 margin-top: 2%;
-                 width: 100%;
-             }
- 
-             .createuser-main {
-                 margin-top: 5%;
-                 width: 40%;
-                 height: 40%;
-             }
- 
-             th {
-                 text-align: center;
-             }
-         </style>
- 
-     </head>
- 
-     <body>
- 
-         <div class="container">
-             <div class="row" id="show_users">
-                 <div class="show_users center-block">
-                     <div class="panel-body" style="padding:0;overflow:auto;">
-                         <div id="light-device-list-table">
-                             <table class="table table-responsive table-hover table-striped"
-                                 style="text-align:center; margin: auto;">
-                                 <thead>
-                                     <tr>
-                                         <th style="width: 50px;">STT</th>
-                                         <th>Tên đăng nhập</th>
-                                         <th>Quyền</th>
-                                         <th>#</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody id="list_users">
-                                 </tbody>
-                                 <tfoot style="display:none;">
-                                     <tr align="center">
-                                         <td colspan=13>No User.</td>
-                                     </tr>
-                                 </tfoot>
-                             </table>
-                         </div>
-                     </div>
-                 </div>
-             </div>
- 
-             <div class="row" id="create_users" style="display:none;">
-                 <div class="createuser-main center-block">
-                     <div class="jumbotron">
-                         <form class="form-horizontal">
-                             <div class="form-group">
-                                 <label for="EdgeX-Username" class="col-sm-4 control-label">Tên đăng nhập</label>
-                                 <div class="col-sm-8">
-                                     <input type="text" class="form-control" id="EdgeX-Username"
-                                         placeholder="Điền tê đăng nhập">
-                                 </div>
-                             </div>
-                             <div class="form-group">
-                                 <label for="EdgeX-Password" class="col-sm-4 control-label">Mật khẩu</label>
-                                 <div class="col-sm-8">
-                                     <input type="password" class="form-control" id="EdgeX-Password"
-                                         placeholder="Điền mật khẩu">
-                                 </div>
-                             </div>
-                             <div class="form-group">
-                                 <label for="EdgeX-ConfirmPassword" class="col-sm-4 control-label">Xác nhận mật khẩu
-                                 </label>
-                                 <div class="col-sm-8">
-                                     <div class="input-group">
-                                         <input type="password" class="form-control" id="EdgeX-ConfirmPassword"
-                                             placeholder="Confirm Password">
-                                         <div class="input-group-addon"><i id="EdgeX-ConfirmPassword-Validate"
-                                                 class="fa fa-close" style="color:red;display:none;"
-                                                 aria-hidden="true"></i></div>
-                                     </div>
- 
-                                 </div>
-                             </div>
-                             <div class="form-group">
-                                 <div class="col-sm-offset-4 col-sm-8">
-                                     <button type="button" class="btn btn-success" onclick="addUser()"><i
-                                             class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
-                                         User</button>
-                                 </div>
-                             </div>
-                         </form>
- 
-                     </div>
-                 </div>
- 
-             </div>
-         </div>
- 
-     </body>
-     <script src="/vendors/jquery/jquery.min.js"></script>
-     <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
-     <script src="/vendors/bootbox/bootbox.min.js"></script>
-     <script src="/js/edgexfoundry.js"></script>
-     <script>
- 
-         function validateUser() {
-             if ($("#EdgeX-Username").val().trim() == "") {
-                 $("#EdgeX-Username").focus();
-                 return false
-             }
-             if ($("#EdgeX-Password").val().trim() == "") {
-                 $("#EdgeX-Password").focus();
-                 return
-             }
-             if ($("#EdgeX-ConfirmPassword").val().trim() == "") {
-                 $("#EdgeX-ConfirmPassword").focus();
-                 return false
-             }
-             if ($("#EdgeX-ConfirmPassword").val().trim() != $("#EdgeX-Password").val().trim()) {
-                 $("#EdgeX-ConfirmPassword").focus();
-                 $("#EdgeX-ConfirmPassword-Validate").show();
-                 return false
-             }
-             $("#EdgeX-ConfirmPassword-Validate").hide();
-             return true
-         }
- 
-         function render_list_user() {
-             console.log("render_list_user")
-             $.ajax({
-                 url: "/api/v1/user",
-                 method: "GET",
-                 success: function (data) {
-                     console.log(data);
-                     data = JSON.parse(data);
-                     if (data.length == 0) {
-                         $('#show_users').hide();
-                         $('#create_users').show();
-                         return;
-                     }
-                     var text = "";
-                     for (let i in data) {
-                         let j = parseInt(i) + 1;
-                         console.log(j);
-                         text += "<tr>" + "<td>"
-                             + j + "</td><td>"
-                             + data[i]['name'] + "</td><td>"
-                             + data[i]['role'] + "</td><td>"
-                             + '<button id="id_edit_user" type="button" class="btn btn-success btn-sm" value="' + data[i]['id'] + '" onclick="edit_user(this.value)">Sửa</button> <button id="id_delete_user" class="btn btn-danger btn-sm" value="' + data[i]['id'] + '" onclick="delete_user(this.value)">Xóa</button>'
-                             + "</td></tr>";
-                     }
-                     document.getElementById("list_users").innerHTML = text;
-                 },
-                 error: function (result) {
-                     $(".createuser-main button").attr("disabled", false);
-                     bootbox.alert({
-                         title: 'Error',
-                         message: result.responseText,
-                         className: 'red-green-buttons'
-                     });
-                 }
-             });
-         }
- 
-         function addUser() {
- 
-             if (!validateUser()) {
-                 return
-             }
-             $(".createuser-main button").attr("disabled", true);
-             var user = {
-                 username: $("#EdgeX-Username").val().trim(),
-                 password: $("#EdgeX-Password").val().trim()
-             }
-             $.ajax({
-                 url: "/api/v1/user",
-                 method: "POST",
-                 data: JSON.stringify(user),
-                 success: function (data) {
-                 },
-                 error: function (result) {
-                     $(".createuser-main button").attr("disabled", false);
-                     bootbox.alert({
-                         title: 'Error',
-                         message: result.responseText,
-                         className: 'red-green-buttons'
-                     });
-                 }
-             });
-         }
- 
-         $(document).ready(function () {
-             render_list_user();
- 
-             document.addEventListener('keyup', (event) => {
-                 if (event.key == 'Enter') {
-                 }
-             }, false);
-         });
- 
-         function delete_user(user_id) {
-             let user = {
-                 "id": user_id
-             }
-             console.log(user);
-             $.ajax({
-                 url: "/api/v1/user",
-                 method: "DELETE",
-                 data: JSON.stringify(user),
- 
-                 success: function (data) {
-                     render_list_user();
-                 },
-                 error: function (result) {
-                     alert("Xóa người dùng thất bại ! Vui lòng thử lại");
-                 }
-             });
-         }
- 
-         function edit_user(user_id) {
-             let password = prompt("Nhập mật khẩu mới:");
-             let confirm_password = prompt("Xác nhận mật khẩu:");
-             if (password == null || password == "") {
-                 if (password == confirm_password) {
-                     let user = {
-                         "id": user_id,
-                         "password": password,
-                     }
-                     $.ajax({
-                         url: "/api/v1/user",
-                         method: "PUT",
-                         data: JSON.stringify(user),
- 
-                         success: function (data) {
-                             render_list_user();
-                         },
-                         error: function (result) {
-                             alert("Vui lòng thử lại");
-                         }
-                     });
-                 }
-             } else {
-                 return;
-             }
-         }
- 
-     </script>
- 
- </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Creater</title>
+    <link rel="icon" href="data:;base64,=">
+    <link href="/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/edgexfoundry.css" rel="stylesheet">
+    <link href="/css/light.css" rel="stylesheet" />
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .show_users {
+            margin-top: 2%;
+            width: 100%;
+        }
+
+        .createuser-main {
+            margin-top: 5%;
+            width: 40%;
+            height: 40%;
+        }
+
+        th {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row" id="show_users">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Danh sách thiết bị &nbsp;
+                    <button class="btn btn-info fa fa-refresh" onclick="render_list_user();"></button>
+                    <button class="btn btn-success fa fa-plus" onclick="showAddUser();"></button>
+
+                </div>
+                <div class="show_users center-block">
+                    <div class="panel-body" style="padding:0;overflow:auto;">
+                        <div id="light-device-list-table">
+                            <table class="table table-responsive table-hover table-striped"
+                                style="text-align:center; margin: auto;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">STT</th>
+                                        <th>ID</th>
+                                        <th>Tên đăng nhập</th>
+                                        <th>Quyền</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list_users">
+                                </tbody>
+                                <tfoot style="display:none;">
+                                    <tr align="center">
+                                        <td colspan=13>No User.</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="create_users" hidden>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <button class="btn btn-warning fa fa-arrow-left" onclick="cancleAddUser();"></button>
+                </div>
+                <div class="createuser-main center-block">
+                    <div class="jumbotron">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="EdgeX-Username" class="col-sm-4 control-label">Tên đăng nhập</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="EdgeX-Username"
+                                        placeholder="Điền tên đăng nhập">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="EdgeX-Password" class="col-sm-4 control-label">Mật khẩu</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" id="EdgeX-Password"
+                                        placeholder="Điền mật khẩu">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="EdgeX-ConfirmPassword" class="col-sm-4 control-label">Xác nhận mật khẩu
+                                </label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="EdgeX-ConfirmPassword"
+                                            placeholder="Confirm Password">
+                                        <div class="input-group-addon"><i id="EdgeX-ConfirmPassword-Validate"
+                                                class="fa fa-close" style="color:red;display:none;"
+                                                aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <button type="button" class="btn btn-success" onclick="addUserAction()"><i
+                                            class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create
+                                        User</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="/vendors/jquery/jquery.min.js"></script>
+<script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="/vendors/bootbox/bootbox.min.js"></script>
+<script>
+
+    function validateUser() {
+        if ($("#EdgeX-Username").val().trim() == "") {
+            $("#EdgeX-Username").focus();
+            return false
+        }
+        if ($("#EdgeX-Password").val().trim() == "") {
+            $("#EdgeX-Password").focus();
+            return
+        }
+        if ($("#EdgeX-ConfirmPassword").val().trim() == "") {
+            $("#EdgeX-ConfirmPassword").focus();
+
+            return false
+        }
+        if ($("#EdgeX-ConfirmPassword").val().trim() != $("#EdgeX-Password").val().trim()) {
+            $("#EdgeX-ConfirmPassword").focus();
+            $("#EdgeX-ConfirmPassword-Validate").show();
+            return false
+        }
+        $("#EdgeX-ConfirmPassword-Validate").hide();
+        return true
+    }
+
+    function render_list_user() {
+        $('#create_users').hide();
+        $('#show_users').show();
+
+        $.ajax({
+            url: "/api/v1/user",
+            method: "GET",
+            success: function (data) {
+                console.log(data);
+                data = JSON.parse(data);
+                if (data.length == 0) {
+                    $('#show_users').hide();
+                    $('#create_users').show();
+                    return;
+                }
+                var text = "";
+                for (let i in data) {
+                    let j = parseInt(i) + 1;
+                    console.log(j);
+                    text += "<tr>" + "<td>"
+                        + j + "</td><td>"
+                        + data[i]['id'] + "</td><td>"
+                        + data[i]['name'] + "</td><td>"
+                        + data[i]['role'] + "</td><td>"
+                        + '<button id="id_edit_user" type="button" class="btn btn-warning fa fa-edit" value="' + data[i]['id'] + '" onclick="edit_user(this.value)"></button>'
+                        + ' <button id="id_delete_user" class="btn btn-danger fa fa-trash" value="' + data[i]['id'] + '" onclick="delete_user(this.value)"></button>'
+                        + "</td></tr>";
+                }
+                document.getElementById("list_users").innerHTML = text;
+            },
+            error: function (result) {
+                $(".createuser-main button").attr("disabled", false);
+                bootbox.alert({
+                    title: 'Error',
+                    message: result.responseText,
+                    className: 'red-green-buttons'
+                });
+            }
+        });
+    }
+
+    function showAddUser() {
+        $("#EdgeX-Username").val("");
+        $("#EdgeX-Password").val("");
+        $("#EdgeX-ConfirmPassword").val("");
+
+        $('#create_users').show();
+        $('#show_users').hide();
+    }
+
+    function cancleAddUser() {
+        $('#create_users').hide();
+        $('#show_users').show();
+    }
+
+    function addUserAction() {
+        if (!validateUser()) {
+            return
+        }
+        $(".createuser-main button").attr("disabled", true);
+        var user = {
+            username: $("#EdgeX-Username").val().trim(),
+            password: $("#EdgeX-Password").val().trim()
+        }
+        $.ajax({
+            url: "/api/v1/user",
+            method: "POST",
+            data: JSON.stringify(user),
+            success: function (data) {
+                render_list_user();
+            },
+            error: function (result) {
+                $(".createuser-main button").attr("disabled", false);
+                bootbox.alert({
+                    title: 'Error',
+                    message: result.responseText,
+                    className: 'red-green-buttons'
+                });
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        render_list_user();
+
+        document.addEventListener('keyup', (event) => {
+            if (event.key == 'Enter') {
+            }
+        }, false);
+    });
+
+    function delete_user(user_id) {
+        bootbox.confirm({
+            title: "confirm",
+            message: "Bạn có chắc chắn muốn xoá tài khoản không?",
+            className: 'green-red-buttons',
+            callback: function (confirm) {
+                if (confirm) {
+                    let user = {
+                        "id": user_id
+                    }
+                    $.ajax({
+                        url: "/api/v1/user",
+                        method: "DELETE",
+                        data: JSON.stringify(user),
+
+                        success: function (data) {
+                            render_list_user();
+                        },
+                        error: function (result) {
+                            alert("Xóa người dùng thất bại ! Vui lòng thử lại");
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function edit_user(user_id) {
+        let password = prompt("Nhập mật khẩu mới:");
+        let confirm_password = prompt("Xác nhận mật khẩu:");
+        if (password == null || password == "") {
+            if (password == confirm_password) {
+                let user = {
+                    "id": user_id,
+                    "password": password,
+                }
+                $.ajax({
+                    url: "/api/v1/user",
+                    method: "PUT",
+                    data: JSON.stringify(user),
+
+                    success: function (data) {
+                        render_list_user();
+                    },
+                    error: function (result) {
+                        alert("Vui lòng thử lại");
+                    }
+                });
+            }
+        } else {
+            return;
+        }
+    }
+
+</script>
+
+</html>

@@ -91,11 +91,9 @@ lightApp = (function () {
     var light = new Light();
     // Device start  -----------------------------------------
     Light.prototype.loadDevice = function () {
-        // for admin
-        var url = '/core-metadata/api/v2/device/profile/name/' + light.Profile;
         // for user
-        // var userId = window.sessionStorage.getItem("id");
-        // var url = '/core-metadata/api/v2/device/all?labels=' + userId;
+        var userId = window.sessionStorage.getItem("id");
+        var url = '/core-metadata/api/v2/device/all?labels=' + userId;
         $.ajax({
             url: url,
             type: 'GET',
@@ -134,222 +132,13 @@ lightApp = (function () {
             var rowData = "<tr>";
             rowData += "<td>" + (i + 1) + "</td>";
             rowData += "<td>" + nameDisplay + "</td>";
-            if (v.hasOwnProperty('description')) {
-                if (v.description != "") {
-                    if(v.description.length > 50)
-                    {
-                        rowData += "<td>" + v.description.substring(0, 50) + "..." + "</td>";
-                    } else { 
-                        rowData += "<td>" + v.description + "</td>";
-                    }
-                    
-                } else {
-                    rowData += "<td></td>";
-                }
-            } else {
-                rowData += "<td></td>";
-            }
-
             rowData += "<td>" + dateToString(v.created) + "</td>";
-            rowData += "<td>" + dateToString(v.modified) + "</td>";
             rowData += '<td><button class="btn btn-info fa fa-terminal" onclick="lightApp.gotoCommand(\'' + v.name + '\', \'' + nameDisplay + '\')"></button></td>';
-            rowData += '<td class="device-edit-icon"><input type="hidden" value=\'' + JSON.stringify(v) + '\'><div class="btn btn-warning fa fa-edit"></div></td>';
-            rowData += '<td class="device-delete-icon"><input type="hidden" value=\'' + JSON.stringify(v.name) + '\'><div class="btn btn-danger fa fa-trash"></div></td>';
             rowData += "</tr>";
             $("#light-device-list-table table tbody").append(rowData);
         });
-
-        $("#light-device-list-table .device-delete-icon").on('click', function () {
-            var device = JSON.parse($(this).children('input').val());
-            light.deleteDevice(device);
-        });
-
-        $("#light-device-list-table .device-edit-icon").on('click', function () {
-            var device = JSON.parse($(this).children('input').val());
-            light.editDevice(device);
-        });
     }
 
-    Light.prototype.editDevice = function (device) {
-        light.currentProtocols = device.protocols;
-        $('#light-deviceID').val(device.name);
-        $('#light-deviceName').val(device.protocols["mqtt"]["Name"]);
-        $('#light-deviceLabels').val(device.labels ? device.labels.join(',') : '');
-        $('#light-deviceDescription').val(device.description);
-
-        $('#light-mac').val("");
-        if ("mqtt" in device.protocols) {
-            if ("MAC" in device.protocols["mqtt"]) {
-                $('#light-mac').val(device.protocols["mqtt"]["MAC"]);
-            }
-        }
-
-        $('#light-command-main').hide();
-        $('#light-device-list').hide();
-        $("#light-device-update-or-add .add-device").hide();
-        $("#light-device-update-or-add .update-device").show();
-
-        $('#update-add-title').html("Sửa đổi thiết bị");
-        $("#light-device-update-or-add").show();
-    };
-
-    Light.prototype.addDevice = function () {
-        $('#light-command-main').hide();
-        $('#light-device-list').hide();
-        $("#light-device-update-or-add").show();
-        $("#light-device-update-or-add .update-device").hide();
-
-        $('#update-add-title').html("Thêm thiết bị mới");
-        $("#light-device-update-or-add .add-device").show();
-
-        // $(".edgexfoundry-device-form")[0].reset();
-        $('#add-or-update-device').trigger("reset");
-        $('#light-deviceID').val("");
-        $('#light-deviceName').val("");
-        $('#light-deviceDescription').val("");
-        $('#light-deviceLabels').val("");
-        $('#light-mac').val("");
-    };
-
-    Light.prototype.cancelAddOrUpdateDevice = function () {
-        $("#light-device-update-or-add").hide();
-        $('#light-command-main').hide();
-        $('#light-device-list').show();
-    };
-
-    Light.prototype.uploadDevice = function (type) {
-        var method;
-        var name;
-
-        if ($('#light-deviceName').val() == "") {
-            bootbox.alert({
-                title: "Error",
-                message: "Tên không được để trống!",
-                className: 'red-green-buttons'
-            })
-            return;
-        }
-
-        if ($('#light-mac').val() == "") {
-            bootbox.alert({
-                title: "Error",
-                message: "MAC không được để trống!",
-                className: 'red-green-buttons'
-            })
-            return;
-        }
-
-        if (type == "new") {
-            method = "POST";
-            name = uuidv4();
-            light.currentProtocols = {};
-        } else {
-            method = "PATCH";
-            name = $('#light-deviceID').val();
-        }
-
-        var property = {
-            "MAC": $('#light-mac').val(),
-            "Name": $('#light-deviceName').val().trim()
-        }
-        light.currentProtocols["mqtt"] = property;
-
-        var device = {
-            name: name,
-            adminState: 'UNLOCKED',
-            operatingState: 'UP',
-            protocols: light.currentProtocols,
-            serviceName: light.DeviceService,
-            profileName: light.Profile,
-        };
-
-        if ($('#light-deviceDescription').val() != "") {
-            device.description = $('#light-deviceDescription').val();
-        }
-
-        if ($('#light-deviceLabels').val() != "") {
-            device.labels = $('#light-deviceLabels').val().split(',');
-        }
-
-        console.log(JSON.stringify([{ "apiVersion": "v2", "device": device }]));
-
-        $.ajax({
-            url: '/core-metadata/api/v2/device',
-            type: method,
-            contentType: 'application/json',
-            data: JSON.stringify([{ "apiVersion": "v2", "device": device }]),
-            success: function () {
-                light.cancelAddOrUpdateDevice();
-                light.loadDevice();
-                bootbox.alert({
-                    message: "commit success!",
-                    className: 'red-green-buttons'
-                });
-            },
-            statusCode: {
-                400: function () {
-                    bootbox.alert({
-                        title: "Error",
-                        message: "Thông tin yêu cầu không hợp lệ!",
-                        className: 'red-green-buttons'
-                    });
-                },
-                409: function () {
-                    bootbox.alert({
-                        title: "Error",
-                        message: "Tên thiết bị đã tồn tại! Vui lòng sử dụng tên khác.",
-                        className: 'red-green-buttons'
-                    });
-                },
-                500: function () {
-                    bootbox.alert({
-                        title: "Error",
-                        message: "Gặp lỗi chưa biết!",
-                        className: 'red-green-buttons'
-                    });
-                }
-            }
-        });
-    }
-
-    Light.prototype.deleteDevice = function (deviceName) {
-        bootbox.confirm({
-            title: "confirm",
-            message: "Bạn có chắc chắn muốn xoá thiết bị không?",
-            className: 'green-red-buttons',
-            callback: function (result) {
-                if (result) {
-                    $.ajax({
-                        url: '/core-metadata/api/v2/device/name/' + deviceName,
-                        type: 'DELETE',
-                        success: function () {
-                            bootbox.alert({
-                                message: "Xóa thiết bị thành công",
-                                className: 'red-green-buttons'
-                            });
-                            light.loadDevice();
-                        },
-                        statusCode: {
-                            400: function () {
-                                bootbox.alert({
-                                    title: "Error",
-                                    message: "Thông tin yêu cầu không hợp lệ!",
-                                    className: 'red-green-buttons'
-                                });
-                            },
-                            404: function () {
-                                bootbox.alert({
-                                    title: "Error",
-                                    message: "Thiết bị không tìm thấy trong hệ thống!",
-                                    className: 'red-green-buttons'
-                                });
-                            },
-                        }
-                    });
-                }
-            }
-        });
-    }
     // Device end  -----------------------------------------
 
     // Command start  -----------------------------------------

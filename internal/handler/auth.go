@@ -50,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	token := core.GetMd5String(u.Name)
 	core.TokenCache[token] = u
 	log.Printf("User: %s, role: %s login ", u.Name, u.Role)
-	w.Write([]byte(fmt.Sprintf("{\"token\":\"%s\", \"role\":\"%s\"}", token, u.Role)))
+	w.Write([]byte(fmt.Sprintf("{\"token\":\"%s\", \"role\":\"%s\", \"id\":\"%s\"}", token, u.Role, u.Id.Hex())))
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {

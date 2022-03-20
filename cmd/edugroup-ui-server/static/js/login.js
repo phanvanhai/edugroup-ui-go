@@ -14,7 +14,7 @@
  * @author: Huaqiao Zhang, <huaqiaoz@vmware.com>
  *******************************************************************************/
 
-function login() {
+ function login() {
     var name = $("#Username").val().trim();
     var pwd = $("#Userpassword").val().trim();
     $.ajax({
@@ -26,9 +26,10 @@ function login() {
             'password': pwd
         }),
         success: function(response) {
-            var data = JSON.parse(response)
-            console.log(data)
+            console.log(response)
+            var data = JSON.parse(response)            
             window.sessionStorage.setItem("role", data["role"]);
+            window.sessionStorage.setItem("id", data["id"]);
             window.sessionStorage.setItem("X_Session_Token", data["token"]);
             window.location.href = '/?X-Session-Token=' + data["token"];
         },
