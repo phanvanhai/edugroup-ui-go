@@ -6,6 +6,9 @@
     <link href="/vendors/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="/vendors/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 
+    <link href="/css/light.css" rel="stylesheet" />
+    </style>
+
 </head>
 
 <body>
@@ -36,20 +39,31 @@
                                     <th>Ngày tạo</th>
                                     <th>Ngày cập nhập</th>
                                     <th>Giám sát</th>
-                                    <th>Sửa đổi</th>
-                                    <th>Xóa</th>
-                                    <!-- <th style="width: 50px;"></th> -->
-                                    <!-- <th style="width: 50px;"></th>
-                                    <th style="width: 50px;"></th> -->
+                                    <th style="width: 50px;"></th>
+                                    <th style="width: 50px;"></th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
-                            <tfoot style="display:none;">
-                                <tr align="center">
-                                    <td colspan=13>Không có thiết bị</td>
-                                </tr>
-                            </tfoot>
+                            <!-- <tfoot style="display:none;">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Device 1</td>
+                                        <td>Device 1</td>
+                                        <td>Device 1</td>
+                                        <td>Device 1</td>
+                                        <td><button class="btn btn-info fa fa-terminal"
+                                                onclick="show_detail()"></button></td>
+                                        <td class="device-edit-icon"><input type="hidden" value="">
+                                            <div class="btn btn-warning fa fa-edit" onclick="edit_device()"></div>
+                                        </td>
+                                        <td class="device-delete-icon" id="device-delete"><input
+                                                class="device-delete-icon" type="hidden" value="">
+                                            <div class="btn btn-danger fa fa-trash"></div>
+                                        </td>
+                                    </tr>
+                                </tfoot> -->
+                            <!-- <td colspan=13>Không có thiết bị</td> -->
                         </table>
                     </div>
                 </div>
@@ -83,19 +97,19 @@
                             <table>
                                 <tr style="display:none;">
                                     <td>Id</td>
-                                    <td hidden><input class='form-control' type='text' id='light-deviceID'
-                                            value=''></td>
+                                    <td hidden><input class='form-control' type='text' id='light-deviceID' value=''>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="col-sm-2">Tên</td>
                                     <td><input class='form-control' type='text' id='light-deviceName'
-                                        placeholder='Tên phải duy nhất trong hệ thống' value=''></td>
+                                            placeholder='Tên phải duy nhất trong hệ thống' value=''></td>
                                 </tr>
 
                                 <tr>
                                     <td class="col-sm-2">User ID</td>
-                                    <td ><input class='form-control' type='text'
-                                            id='light-deviceLabels' placeholder='Id của người dùng sở hữu' value=''></td>
+                                    <td><input class='form-control' type='text' id='light-deviceLabels'
+                                            placeholder='Id của người dùng sở hữu' value=''></td>
                                 </tr>
 
                                 <tr>
@@ -116,7 +130,7 @@
         <!-- device update or add end -->
 
         <!-- command start -->
-        <div id="light-command-main" hidden>
+        <div id="light-command-main" style="position:relative;" hidden>
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -124,80 +138,175 @@
                         &nbsp; &nbsp;<i id="light-currentDevice"></i>
                     </h3>
                 </div>
-                <fieldset>
-                    <legend>Trang thai van </legend>
-                    <div class="form-inline">
-                        <label>Van ap thap</label>
-                        <input id='monitor_apthap' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
-                            disabled>
-                        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                        <label>Van ap cao 1:</label>
-                        <input id='monitor_apcao1' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
-                            disabled>
-                        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                        <label>Van ap cao 2:</label>
-                        <input id='monitor_apcao2' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
-                            disabled>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Dieu khien </legend>
-                    <div class="form-inline">
-                        <label>Relay AC:</label>
-                        <input id='monitor_relay_ac' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt">
-                        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                        <label>Bom:</label>
-                        <input id='monitor_bom' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt">
-                        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                        <label">Van tu:</label>
-                            <input id='monitor_vantu' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt">
+                <!-- <fieldset>
+                        <legend>Trang thai van </legend>
+                        <div class="form-inline">
+                            <label>Van ap thap</label>
+                            <input id='monitor_apthap' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
+                                disabled>
                             &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                            <label">Relay 1:</label>
-                                <input id='monitor_relay1' type="checkbox" data-toggle="toggle" data-on="Bật"
+                            <label>Van ap cao 1:</label>
+                            <input id='monitor_apcao1' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
+                                disabled>
+                            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                            <label>Van ap cao 2:</label>
+                            <input id='monitor_apcao2' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt"
+                                disabled>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Dieu khien </legend>
+                        <div class="form-inline">
+                            <label>Relay AC:</label>
+                            <input id='monitor_relay_ac' type="checkbox" data-toggle="toggle" data-on="Bật"
+                                data-off="Tắt">
+                            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                            <label>Bom:</label>
+                            <input id='monitor_bom' type="checkbox" data-toggle="toggle" data-on="Bật" data-off="Tắt">
+                            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                            <label">Van tu:</label>
+                                <input id='monitor_vantu' type="checkbox" data-toggle="toggle" data-on="Bật"
                                     data-off="Tắt">
                                 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                                <label>Relay 2:</label>
-                                <input id='monitor_relay2' type="checkbox" data-toggle="toggle" data-on="Bật"
-                                    data-off="Tắt">
+                                <label">Relay 1:</label>
+                                    <input id='monitor_relay1' type="checkbox" data-toggle="toggle" data-on="Bật"
+                                        data-off="Tắt">
+                                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                                    <label>Relay 2:</label>
+                                    <input id='monitor_relay2' type="checkbox" data-toggle="toggle" data-on="Bật"
+                                        data-off="Tắt">
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Trang cam bien </legend>
+                        <label>Tong nuoc vao (m3)</label>
+                        <input id='monitor_volume1' type="text" disabled>
+                        <label>Tong nuoc ra (m3)</label>
+                        <input id='monitor_volume2' type="text" disabled>
+                        <label>Luu luong binh 1 (l/ph)</label>
+                        <input id='monitor_flow1' type="text" disabled>
+                        <label>Luu luong binh 2 (l/ph)</label>
+                        <input id='monitor_flow2' type="text" disabled>
+                        <label>Luu luong binh 3 (l/ph)</label>
+                        <input id='monitor_flow3' type="text" disabled>
+                        <label>Luu luong binh 4 (l/ph)</label>
+                        <input id='monitor_flow4' type="text" disabled>
+                        <label>Luu luong binh 5 (l/ph)</label>
+                        <input id='monitor_flow5' type="text" disabled>
+
+                        <br>
+                        <label>TDS 1 (ppm)</label>
+                        <input id='monitor_tds1' type="text" disabled>
+                        <label>TDS 2 (ppm)</label>
+                        <input id='monitor_tds2' type="text" disabled>
+                        <label>TDS 3 (ppm)</label>
+                        <input id='monitor_tds3' type="text" disabled>
+                        <label>TDS 4 (ppm)</label>
+                        <input id='monitor_tds4' type="text" disabled>
+
+                        <br>
+                        <label>Dien nang tieu thu (kW)</label>
+                        <input id='monitor_power_kw' type="text" disabled>
+                        <label>Dien ap (V)</label>
+                        <input id='monitor_power_u' type="text" disabled>
+                        <label>Dong dien (A)</label>
+                        <input id='monitor_power_i' type="text" disabled>
+                        <label>Cong suat tieu thu (kWh)</label>
+                        <input id='monitor_power_kwh' type="text" disabled>
+                    </fieldset> -->
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 container">
+                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
+                                <table style="margin: 0 auto;">
+                                    <tr style="border-bottom:2px solid white">
+                                        <th colspan="5" class="text-center">LƯU LƯỢNG</th>
+                                        <br>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">Bình 1</td>
+                                        <td class="col-sm-2">Bình 2</td>
+                                        <td class="col-sm-2">Bình 3</td>
+                                        <td class="col-sm-2">Bình 4</td>
+                                        <td class="col-sm-2">Bình 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12.4 l/p</td>
+                                        <td>23.6 l/p</td>
+                                        <td>11.0</td>
+                                        <td>5</td>
+                                        <td>0</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
+                                <table style="margin: 0 auto;">
+                                    <tr style="border-bottom:2px solid white">
+                                        <th colspan="4" class="text-center">TDS</th>
+                                        <br>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-3">Bình 1</td>
+                                        <td class="col-sm-3">Bình 2</td>
+                                        <td class="col-sm-3">Bình 3</td>
+                                        <td class="col-sm-3">Bình 4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12.4 ppm</td>
+                                        <td>23.6 ppm</td>
+                                        <td>11.0 ppm</td>
+                                        <td>5 ppm</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="relay">
+                                <button type="button" class="btn btn-success btn-circle btn-sm">Bật</button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 container">
+                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
+                                <table style="margin: 0 auto;">
+                                    <tr style="border-bottom:2px solid white">
+                                        <th colspan="3" class="text-center">CÔNG TƠ NƯỚC</th>
+                                        <br>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-4">Vào</td>
+                                        <td class="col-sm-4"></td>
+                                        <td class="col-sm-4">Ra</td>
+                                    </tr>
+                                    <tr>
+                                        <td>123 m3</td>
+                                        <td></td>
+                                        <td>124 m3</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card text-white bg-success mb-3" style="border-radius: 10px; margin-top: 3vh;">
+                                <table style="margin: 0 auto;">
+                                    <tr style="border-bottom:2px solid white">
+                                        <th colspan="2" class="text-center">CÔNG TƠ ĐIỆN</th>
+                                        <br>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-3">Điện năng tiêu thụ</td>
+                                        <td class="col-sm-3">Công suất tiêu thụ</td>                                     
+                                    </tr>
+                                    <tr>
+                                        <td>1357 kW</td>
+                                        <td>0.04 kWh</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="valve">
+                                <button type="button" class="btn btn-danger btn-circle btn-sm">Sục/Xả</button>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 container">
+                            <img src="../data/monitor.png" class="img-responsive" />
+                        </div>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Trang cam bien </legend>
-                    <label>Tong nuoc vao (m3)</label>
-                    <input id='monitor_volume1' type="text" disabled>
-                    <label>Tong nuoc ra (m3)</label>
-                    <input id='monitor_volume2' type="text" disabled>
-                    <label>Luu luong binh 1 (l/ph)</label>
-                    <input id='monitor_flow1' type="text" disabled>
-                    <label>Luu luong binh 2 (l/ph)</label>
-                    <input id='monitor_flow2' type="text" disabled>
-                    <label>Luu luong binh 3 (l/ph)</label>
-                    <input id='monitor_flow3' type="text" disabled>
-                    <label>Luu luong binh 4 (l/ph)</label>
-                    <input id='monitor_flow4' type="text" disabled>
-                    <label>Luu luong binh 5 (l/ph)</label>
-                    <input id='monitor_flow5' type="text" disabled>
-
-                    <br>
-                    <label>TDS 1 (ppm)</label>
-                    <input id='monitor_tds1' type="text" disabled>
-                    <label>TDS 2 (ppm)</label>
-                    <input id='monitor_tds2' type="text" disabled>
-                    <label>TDS 3 (ppm)</label>
-                    <input id='monitor_tds3' type="text" disabled>
-                    <label>TDS 4 (ppm)</label>
-                    <input id='monitor_tds4' type="text" disabled>
-
-                    <br>
-                    <label>Dien nang tieu thu (kW)</label>
-                    <input id='monitor_power_kw' type="text" disabled>
-                    <label>Dien ap (V)</label>
-                    <input id='monitor_power_u' type="text" disabled>
-                    <label>Dong dien (A)</label>
-                    <input id='monitor_power_i' type="text" disabled>
-                    <label>Cong suat tieu thu (kWh)</label>
-                    <input id='monitor_power_kwh' type="text" disabled>
-                </fieldset>
+                </form>
             </div>
         </div>
         <!-- command end -->

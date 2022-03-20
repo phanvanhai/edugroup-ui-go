@@ -1,0 +1,131 @@
+h1 {
+color: green;
+}
+
+.xyz {
+    background-size: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+
+.btn-circle.btn-sm {
+    margin-top: 10vh;
+    width: 10vw;
+    height: 10vw;
+    padding: 6px 0px;
+    border-radius: 50%;
+    font-size: 50px;
+    text-align: center;
+}
+
+.btn-circle.btn-md {
+    width: 50px;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 25px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 32px;
+    text-align: center;
+}
+
+.bg-warning {
+    margin-top: 2vh;
+    height: 15vh;
+    text-align: center;
+    line-height: 4vh;
+    background-color: #ff7b25;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: black;
+    font-weight: bold;
+}
+
+.bg-primary {
+    margin-top: 2vh;
+    height: 21vh;
+    text-align: center;
+    background-color: #80ced6;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: black;
+    font-weight: bold;
+}
+
+.bg-secondary {
+    margin-top: 2vh;
+    height: 21vh;
+    text-align: center;
+    line-height: 4vh;
+    background-color: #fefbd8;
+    border-radius: 10px;
+    font-size: 2vh;
+    font-weight: bold;
+}
+
+.bg-success {
+    margin-top: 2vh;
+    height: 21vh;
+    text-align: center;
+    line-height: 4vh;
+    background-color: #82b74b;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.bg-light {
+    margin-top: 3vh;
+    height: 15vh;
+    text-align: center;
+    line-height: 4vh;
+    background-color: #ffef96;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.bg-dark {
+    margin-top: 2vh;
+    height: 15vh;
+    text-align: center;
+    line-height: 4vh;
+    background-color: #eca1a6;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.bg-danger {
+    margin-top: 2vh;
+    height: 15vh;
+    text-align: center;
+    line-height: 4vh;
+    color: #000;
+    background-color: #b2b2b2;
+    border-radius: 10px;
+    font-size: 2vh;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+h2 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 5vh;
+}
+
+#card text-white {
+    width: 70px;
+    border-radius: 50%;
+}

@@ -61,7 +61,7 @@ lightApp = (function () {
         this.currentSelectDevice = "";
         this.currentProtocols = null;
         this.monitorTimer = null;
-        this.intervalMonitor = 10000;
+        this.intervalMonitor = 100000;
     }
 
     Light.prototype = {
