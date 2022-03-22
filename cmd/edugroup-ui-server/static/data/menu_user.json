@@ -7,7 +7,7 @@
 	},
 	{
 		"title": "Đăng xuất",
-		"url": "/logout.html",
+		"url": "/login.html",
 		"icon": "fa fa-sign-out fa-lg"
 	}
 ]

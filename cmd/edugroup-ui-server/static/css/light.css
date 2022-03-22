@@ -390,3 +390,20 @@ br {
     text-align: center;
     background-color: #ffffff;
 }
+
+.col-sm-2 {
+    width: 4vw;
+    height: 0vw;
+    color: white;
+    left: 7%;
+    margin-top: 0;
+    margin-left: 0.5vw;
+    font-size: 100%;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5%;
+    background-color: rgb(243, 200, 82);
+    padding: 5px;
+}
+
+

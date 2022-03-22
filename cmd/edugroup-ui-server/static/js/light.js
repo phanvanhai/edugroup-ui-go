@@ -62,6 +62,9 @@ lightApp = (function () {
         this.currentProtocols = null;
         this.monitorTimer = null;
         this.intervalMonitor = 100000;
+
+        this.currentRelayACState = true;
+        this.currentRelayXaState = false;
     }
 
     Light.prototype = {
@@ -136,13 +139,12 @@ lightApp = (function () {
             rowData += "<td>" + nameDisplay + "</td>";
             if (v.hasOwnProperty('description')) {
                 if (v.description != "") {
-                    if(v.description.length > 50)
-                    {
+                    if (v.description.length > 50) {
                         rowData += "<td>" + v.description.substring(0, 50) + "..." + "</td>";
-                    } else { 
+                    } else {
                         rowData += "<td>" + v.description + "</td>";
                     }
-                    
+
                 } else {
                     rowData += "<td></td>";
                 }
@@ -391,101 +393,115 @@ lightApp = (function () {
         for (const reading of readings) {
             var resource = reading.resourceName;
             var value = reading.value;
+            let val = 0;
 
             switch (resource) {
                 case light.MapResource.Apcao1:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apcao1').bootstrapToggle(value);
+                    // $('#monitor_apcao1').bootstrapToggle(value);
                     break;
                 case light.MapResource.Apcao2:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apcao2').bootstrapToggle(value);
+                    // $('#monitor_apcao2').bootstrapToggle(value);
                     break;
                 case light.MapResource.Apthap:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apthap').bootstrapToggle(value);
+                    // $('#monitor_apthap').bootstrapToggle(value);
                     break;
                 case light.MapResource.Bom:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_bom').bootstrapToggle(value);
+                    // $('#monitor_bom').bootstrapToggle(value);
                     break;
                 case light.MapResource.Vantu:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_vantu').bootstrapToggle(value);
+                    // $('#monitor_vantu').bootstrapToggle(value);
                     break;
                 case light.MapResource.Relay1:
-                    if (value = "0") {
-                        value = "off"
-                    } else { value = "on" };
-                    $('#monitor_relay1').bootstrapToggle(value);
+                    if (value == "0") {
+                        this.currentRelayXaState = false;
+                    } else { this.currentRelayXaState = true; };
+                    relayXa_state(this.currentRelayXaState);
                     break;
                 case light.MapResource.Relay2:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_relay2').bootstrapToggle(value);
+                    // $('#monitor_relay2').bootstrapToggle(value);
                     break;
                 case light.MapResource.RelayAC:
-                    if (value = "0") {
-                        value = "off"
-                    } else { value = "on" };
-                    console.log("change AC");
-                    $('#monitor_relay_ac').bootstrapToggle(value);
+                    if (value == "0") {
+                        this.currentRelayACState = false;
+                    } else { this.currentRelayACState = true};
+                    relayAC_state(this.currentRelayACState);
                     break;
                 case light.MapResource.PowerI:
-                    $('#monitor_power_i').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_power_i").text(val);
                     break;
                 case light.MapResource.PowerKw:
-                    $('#monitor_power_kw').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_power_kw").text(val);
                     break;
                 case light.MapResource.PowerKwh:
-                    $('#monitor_power_kwh').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_power_kwh").text(val);
                     break;
                 case light.MapResource.PowerU:
-                    $('#monitor_power_u').val(value);
+                    // $('#monitor_power_u').val(value);
                     break;
                 case light.MapResource.Tds1:
-                    $('#monitor_tds1').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_tds1").text(val);
                     break;
                 case light.MapResource.Tds2:
-                    $('#monitor_tds2').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_tds2").text(val);
                     break;
                 case light.MapResource.Tds3:
-                    $('#monitor_tds3').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_tds3").text(val);
                     break;
                 case light.MapResource.Tds4:
-                    $('#monitor_tds4').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_tds4").text(val);
                     break;
                 case light.MapResource.WaterFlow1:
-                    $('#monitor_flow1').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_flow1").text(val);
                     break;
                 case light.MapResource.WaterFlow2:
-                    $('#monitor_flow2').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_flow2").text(val);
                     break;
                 case light.MapResource.WaterFlow3:
-                    $('#monitor_flow3').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_flow3").text(val);
                     break;
                 case light.MapResource.WaterFlow4:
-                    $('#monitor_flow4').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_flow4").text(val);
                     break;
                 case light.MapResource.WaterFlow5:
-                    $('#monitor_flow5').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_flow5").text(val);
                     break;
                 case light.MapResource.WaterVolume1:
-                    $('#monitor_volume1').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_volume1").text(val);
                     break;
                 case light.MapResource.WaterVolume2:
-                    $('#monitor_volume2').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    $("#monitor_volume2").text(val);
                     break;
                 default:
                     break;
@@ -494,52 +510,58 @@ lightApp = (function () {
     }
 
     Light.prototype.command_onoff_relayAC = function () {
-        var isChecked = $('#monitor_relay_ac').prop("checked");
+        this.currentRelayACState = !this.currentRelayACState;
         var resource = light.MapResource.RelayAC;
         var body = {
-            [resource]: isChecked ? 1 : 0
+            [resource]: this.currentRelayACState ? 1 : 0
         };
 
         console.log(JSON.stringify(body));
         $.ajax({
-            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/command/' + light.MapCommand.RelayAC,
+            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/' + light.MapCommand.RelayAC,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(body),
             dataType: 'text',
             success: function (data) {
+                relayAC_state(this.currentRelayACState);
                 light.monitor_get_data();
             },
             error: function () {
-                $('#monitor_relay_ac').bootstrapToggle(isChecked ? "off" : "on");
+                alert("Gửi yêu cầu không thành công!");
+                this.currentRelayACState = !this.currentRelayACState;
+                relayAC_state(this.currentRelayACState);
             }
         });
     }
 
     Light.prototype.command_onoff_bom_relay1 = function () {
-        var isChecked = $('#monitor_relay_ac').prop("checked");
-        if (!isChecked) {
+        if (!this.currentRelayACState) {
             alert("Không thể thực hiện do thiết bị chưa được bật nguồn!");
             return;
         }
 
-        isChecked = $('#monitor_relay1').prop("checked");
-        var body = {
-            [light.MapResource.Bom]: isChecked ? 1 : 0,
-            [light.MapResource.Relay1]: isChecked ? 1 : 0
-        };
+        this.currentRelayXaState = !this.currentRelayXaState;
 
-        console.log(JSON.stringify(body));
+        var body = {
+            [light.MapResource.Bom]: this.currentRelayXaState ? 1 : 0,
+            [light.MapResource.Relay1]: this.currentRelayXaState ? 1 : 0
+        };
+        console.log(JSON.stringify(body))
+
         $.ajax({
-            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/command/' + light.MapCommand.BomRelay1,
+            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/' + light.MapCommand.BomRelay1,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(body),
             dataType: 'text',
             success: function (data) {
+                relayXa_state(this.currentRelayXaState);
                 light.monitor_get_data();
             }, error: function () {
-                $('#monitor_relay1').bootstrapToggle(isChecked ? "off" : "on");
+                alert("Gửi yêu cầu không thành công!");
+                this.currentRelayXaState = !this.currentRelayXaState;
+                relayXa_state(this.currentRelayXaState);
             }
         });
     }
@@ -550,31 +572,77 @@ lightApp = (function () {
 
 })();
 
-var i = 1;
-function btn_first() {
-    var property = document.getElementById('button_first');
-    if (i == 0) {
+function relayAC_state(state) {
+    var property = document.getElementById('monitor_relay_ac');
+    if (state == true) {
         property.style.backgroundColor = "#82b74b"
-        $('#button_first').text('BẬT');
-        i = 1;
+        $('#monitor_relay_ac').text('BẬT');
     }
     else {
         property.style.backgroundColor = "#c94c4c"
-        $('#button_first').text('TẮT');
-        i = 0;
+        $('#monitor_relay_ac').text('TẮT');
     }
 }
 
-var j = 1;
-function btn_second() {
-    console.log("btn_first");
-    var property = document.getElementById('button_second');
-    if (j == 0) {
+function relayXa_state(state) {
+    var property = document.getElementById('monitor_relay1');
+    if (state == true) {
         property.style.backgroundColor = "#80ced6"
-        j = 1;
     }
     else {
         property.style.backgroundColor = "#f18973"
-        j = 0;
     }
+}
+
+function btn_uv() {
+    document.getElementById("info-detail").innerHTML = "";
+}
+
+function btn_t33() {
+    document.getElementById("info-detail").innerHTML = "T33: Có chứa than hoạt tính dạng xốp nén tích hợp vật liệu Nano bạc."
+
+        + "<br>Chức năng: Cân bằng độ PH, mềm nước, tạo khoáng mang lại cảm giác nước uống ngon ngọt hơn."
+
+        + "<br>K33: Lõi lọc nước có chức năng bổ sung thêm các khoáng chất như K, Mg, P, Ca... thiết yếu cho cơ thể.";
+}
+
+function btn_pump()
+{
+    document.getElementById("info-detail").innerHTML = "Điện áp 36V - 2A."
+        + "<br>Lưu lượng: 3.4-4LPM.";
+}
+
+function btn_ro() {
+    document.getElementById("info-detail").innerHTML = "Màng lọc RO là lõi quan trọng nhất trong máy lọc nước được cấu tạo bởi các sợi tổng hợp polyamid."
+        + "<br>Màng lọc này có các khe siêu nhỏ 0.0001micron, nhỏ hơn hàng trăm lần vi khuẩn."
+
+        + "<br>Chức năng: Màng lọc RO cho khả năng lọc bỏ được các tạp chất, bụi bẩn, vi khuẩn độc hại, kim loại nặng, ion kim loại ảnh hưởng không tốt đối với sức khỏe để cho ra nguồn nước sạch và tinh khiết";
+    document.getElementById("info-detail").style.fontSize = "1.6vh";
+}
+
+function btn_pp() {
+    document.getElementById("info-detail").innerHTML = "Lõi lọc số 1 được cấu tạo bởi các sợi bông xốp của nhựa polypropylene, khi cho vào lõi lọc thì nó sẽ được nén chặt lại để tạo ra các khe lọc khác nhau. Khe lọc có kích cỡ là 5micron."
+        + "<br>Chức năng: Lọc bỏ gỉ sét, bùn đất, các vật chất lơ lửng trong nước, đồng thời ngăn cản bớt các yếu tố vi sinh tràn vào bên trong hệ thống."
+    document.getElementById("info-detail").style.fontSize = "1.7vh";
+}
+
+function btn_gac() {
+    document.getElementById("info-detail").innerHTML = "Lõi lọc số 2 của máy lọc nước có cấu tạo bên ngoài là vỏ nhựa, bên trong có chứa than gáo dừa được hoạt hóa, than hoạt tính có cấu trúc xốp rỗng, có tính chất hấp thụ mạnh."
+        + "<br>Chức năng: Than hoạt tính có khả năng hấp thụ mạnh các loại chất nhờn, mùi và hữu cơ hòa tan, kim loại nặng. Đặc biệt là than hoạt tính có khả năng xử lý asen và amoni."
+    document.getElementById("info-detail").style.fontSize = "1.7vh";
+}
+
+function btn_cto() {
+    document.getElementById("info-detail").innerHTML = "Lõi số 3 có cấu tạo bằng than hoạt tính được nghiền nhỏ ra dưới dạng bột, sau đó ép thành khối nhằm tăng diện tích bề mặt tiếp xúc với nước để làm tăng hiệu quả xử lý nước hơn."
+        + "Than hoạt tính tính ép có khả năng lọc nước tốt hơn so với than hoạt tính dạng hạt."
+
+        + "<br>Chức năng: Than hoạt tính có khả năng hấp thụ mạnh các loại chất nhờn, mùi và hữu cơ hòa tan, lọc cặn, bùn đất và rỉ sét có kích thước lớn hơn hoặc bằng 1 micromet."
+    document.getElementById("info-detail").style.fontSize = "1.6vh";
+}
+
+
+function btn_tho() {
+    document.getElementById("info-detail").innerHTML = "Lõi lọc thô được cấu tạo từ các sợi bông được nén ở công suất cao, tạo nên khe lọc có kích thước từ 0.5 đến 5 micromet."
+        + "<br>Nguồn nước đầu vào sau khi lọc qua bộ lọc thô sẽ được loại bỏ tạp chất, cặn bẩn, sinh vật phù du, tảo có kích thước lớn trong nước máy hoặc nước giếng."
+    document.getElementById("info-detail").style.fontSize = "1.6vh";
 }

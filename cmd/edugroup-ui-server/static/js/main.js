@@ -88,14 +88,22 @@
 				$(this).next("div.second_level").slideToggle("normal");
 				return;
 			}
-			// $(".sidebar li").not($(this)).css({color:'',borderBottom: '',borderBottomColor:''});
-			// $(this).css({color:'#339933',borderBottom: '2px solid',borderBottomColor:'#339933'});
-			// $(".sidebar li").not($(this)).css({ color: '', borderBottom: '', borderBottomColor: '', backgroundColor: '' });
-			// $(this).css({ color: '#339933', borderBottom: '', backgroundColor: 'rgba(51, 153, 51, 0.5)' });
-			//if current node is leaf node，load html resource.
 			var tabindex = $(this).attr("tabindex");
 			var url = $(this).attr("url");
-			createTabByTitle(tabindex, url);
+			if (url == "/login.html") {
+				var isLogout = false;
+				console.log("logout");
+				$.ajax({
+					url: '/api/v1/auth/logout?ran=' + Math.random(),
+					type: 'GET',
+					success: function () {
+						isLogout = true;
+						window.location.href = '/login.html?ran=' + Math.random();
+					}
+				});
+			} else {
+				createTabByTitle(tabindex, url);
+			}
 		});
 	}
 

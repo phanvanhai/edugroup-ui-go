@@ -9,3 +9,16 @@
 .user_info table td{
     padding: 5px;
 }
+
+
+.form-horizontal .control-label {
+    /* padding: 7px; */
+    /* margin: 10px; */
+    text-align: left;
+}
+
+.panel-success {
+    border-color: #d6e9c6;
+    width: 83vw;
+    margin-left: 10px;
+}
