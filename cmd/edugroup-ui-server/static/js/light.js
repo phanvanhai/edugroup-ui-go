@@ -60,6 +60,7 @@ lightApp = (function () {
         };
         this.currentSelectDevice = "";
         this.currentProtocols = null;
+        this.currentDescription = "";
         this.monitorTimer = null;
         this.intervalMonitor = 100000;
 
@@ -137,7 +138,9 @@ lightApp = (function () {
             var rowData = "<tr>";
             rowData += "<td>" + (i + 1) + "</td>";
             rowData += "<td>" + nameDisplay + "</td>";
+            var description = "";
             if (v.hasOwnProperty('description')) {
+                description = v.description;
                 if (v.description != "") {
                     if (v.description.length > 50) {
                         rowData += "<td>" + v.description.substring(0, 50) + "..." + "</td>";
@@ -154,7 +157,7 @@ lightApp = (function () {
 
             rowData += "<td>" + dateToString(v.created) + "</td>";
             rowData += "<td>" + dateToString(v.modified) + "</td>";
-            rowData += '<td><button class="btn btn-info fa fa-terminal" onclick="lightApp.gotoCommand(\'' + v.name + '\', \'' + nameDisplay + '\')"></button></td>';
+            rowData += '<td><button class="btn btn-info fa fa-terminal" onclick="lightApp.gotoCommand(\'' + v.name + '\', \'' + nameDisplay + '\', \'' + description + '\')"></button></td>';
             rowData += '<td class="device-edit-icon"><input type="hidden" value=\'' + JSON.stringify(v) + '\'><div class="btn btn-warning fa fa-edit"></div></td>';
             rowData += '<td class="device-delete-icon"><input type="hidden" value=\'' + JSON.stringify(v.name) + '\'><div class="btn btn-danger fa fa-trash"></div></td>';
             rowData += "</tr>";
@@ -355,9 +358,11 @@ lightApp = (function () {
     // Device end  -----------------------------------------
 
     // Command start  -----------------------------------------
-    Light.prototype.gotoCommand = function (name, nameDisplay) {
+    Light.prototype.gotoCommand = function (name, nameDisplay, description) {
         light.currentSelectDevice = name;
+        light.currentDescription = description;
         $('#light-currentDevice').html(nameDisplay);
+        $('#info-set').val(description);
 
         $('#light-onoff-status').val("");
         $('#light-dimming-status').val("");
