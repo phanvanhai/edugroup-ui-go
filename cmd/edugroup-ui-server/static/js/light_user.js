@@ -60,8 +60,12 @@ lightApp = (function () {
         };
         this.currentSelectDevice = "";
         this.currentProtocols = null;
+        this.currentDescription = "";
         this.monitorTimer = null;
-        this.intervalMonitor = 100000;
+        this.intervalMonitor = 5000;
+
+        this.currentRelayACState = true;
+        this.currentRelayXaState = false;
     }
 
     Light.prototype = {
@@ -91,6 +95,8 @@ lightApp = (function () {
     var light = new Light();
     // Device start  -----------------------------------------
     Light.prototype.loadDevice = function () {
+        // for admin
+        // var url = '/core-metadata/api/v2/device/profile/name/' + light.Profile;
         // for user
         var userId = window.sessionStorage.getItem("id");
         var url = '/core-metadata/api/v2/device/all?labels=' + userId;
@@ -133,7 +139,8 @@ lightApp = (function () {
             rowData += "<td>" + (i + 1) + "</td>";
             rowData += "<td>" + nameDisplay + "</td>";
             rowData += "<td>" + dateToString(v.created) + "</td>";
-            rowData += '<td><button class="btn btn-info fa fa-terminal" onclick="lightApp.gotoCommand(\'' + v.name + '\', \'' + nameDisplay + '\')"></button></td>';
+            rowData += "<td>" + dateToString(v.modified) + "</td>";
+            rowData += '<td><button class="btn btn-info fa fa-terminal" onclick="lightApp.gotoCommand(\'' + v.name + '\', \'' + nameDisplay + '\', \'\')"></button></td>';
             rowData += "</tr>";
             $("#light-device-list-table table tbody").append(rowData);
         });
@@ -142,16 +149,9 @@ lightApp = (function () {
     // Device end  -----------------------------------------
 
     // Command start  -----------------------------------------
-    Light.prototype.gotoCommand = function (name, nameDisplay) {
+    Light.prototype.gotoCommand = function (name, nameDisplay, description) {
         light.currentSelectDevice = name;
         $('#light-currentDevice').html(nameDisplay);
-
-        $('#light-onoff-status').val("");
-        $('#light-dimming-status').val("");
-        $('#light-onoffScheduleTable tbody').empty();
-        $('#light-dimmingScheduleTable tbody').empty();
-        $('#light-groupTable tbody').empty();
-        $('#light-scenarioTable tbody').empty();
 
         $('#light-device-list').hide();
         $('#light-command-main').show("fast");
@@ -180,157 +180,157 @@ lightApp = (function () {
         for (const reading of readings) {
             var resource = reading.resourceName;
             var value = reading.value;
+            let val = 0;
+            let tds1 = tds2 = tds3 = tds4 = 0;
 
             switch (resource) {
                 case light.MapResource.Apcao1:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apcao1').bootstrapToggle(value);
+                    // $('#monitor_apcao1').bootstrapToggle(value);
                     break;
                 case light.MapResource.Apcao2:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apcao2').bootstrapToggle(value);
+                    // $('#monitor_apcao2').bootstrapToggle(value);
                     break;
                 case light.MapResource.Apthap:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_apthap').bootstrapToggle(value);
+                    // $('#monitor_apthap').bootstrapToggle(value);
                     break;
                 case light.MapResource.Bom:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_bom').bootstrapToggle(value);
+                    // $('#monitor_bom').bootstrapToggle(value);
                     break;
                 case light.MapResource.Vantu:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_vantu').bootstrapToggle(value);
+                    // $('#monitor_vantu').bootstrapToggle(value);
                     break;
                 case light.MapResource.Relay1:
-                    if (value = "0") {
-                        value = "off"
-                    } else { value = "on" };
-                    $('#monitor_relay1').bootstrapToggle(value);
+                    if (value == "0") {
+                        this.currentRelayXaState = false;
+                    } else { this.currentRelayXaState = true; };
+                    relayXa_state(this.currentRelayXaState);
                     break;
                 case light.MapResource.Relay2:
-                    if (value = "0") {
+                    if (value == "0") {
                         value = "off"
                     } else { value = "on" };
-                    $('#monitor_relay2').bootstrapToggle(value);
+                    // $('#monitor_relay2').bootstrapToggle(value);
                     break;
                 case light.MapResource.RelayAC:
-                    if (value = "0") {
-                        value = "off"
-                    } else { value = "on" };
-                    console.log("change AC");
-                    $('#monitor_relay_ac').bootstrapToggle(value);
+                    if (value == "0") {
+                        this.currentRelayACState = false;
+                    } else { this.currentRelayACState = true};
+                    relayAC_state(this.currentRelayACState);
                     break;
                 case light.MapResource.PowerI:
-                    $('#monitor_power_i').val(value);
+                    val = parseFloat(value).toFixed(2);
+                    $("#monitor_power_i").text(val);
                     break;
                 case light.MapResource.PowerKw:
-                    $('#monitor_power_kw').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    if(val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if(val >= 100) val = parseFloat(value).toFixed(1);
+                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    $("#monitor_power_kw").text(val);
                     break;
                 case light.MapResource.PowerKwh:
-                    $('#monitor_power_kwh').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    if(val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if(val >= 100) val = parseFloat(value).toFixed(1);
+                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    $("#monitor_power_kwh").text(val);
                     break;
                 case light.MapResource.PowerU:
-                    $('#monitor_power_u').val(value);
+                    // $('#monitor_power_u').val(value);
                     break;
                 case light.MapResource.Tds1:
-                    $('#monitor_tds1').val(value);
+                    val = parseFloat(value).toFixed(0);
+                    $("#monitor_tds1").text(val);
+                    tds1 = val;
                     break;
                 case light.MapResource.Tds2:
-                    $('#monitor_tds2').val(value);
+                    val = parseFloat(value).toFixed(0);
+                    $("#monitor_tds2").text(val);
+                    tds2 = val;
                     break;
                 case light.MapResource.Tds3:
-                    $('#monitor_tds3').val(value);
+                    val = parseFloat(value).toFixed(0);
+                    $("#monitor_tds3").text(val);
+                    tds3 = val;
                     break;
                 case light.MapResource.Tds4:
-                    $('#monitor_tds4').val(value);
+                    val = parseFloat(value).toFixed(0);
+                    $("#monitor_tds4").text(val);
+                    tds4 = val;
                     break;
                 case light.MapResource.WaterFlow1:
-                    $('#monitor_flow1').val(value);
+                    val = parseFloat(value).toFixed(1);
+                    $("#monitor_flow1").text(val);
                     break;
                 case light.MapResource.WaterFlow2:
-                    $('#monitor_flow2').val(value);
+                    val = parseFloat(value).toFixed(1);
+                    $("#monitor_flow2").text(val);
                     break;
                 case light.MapResource.WaterFlow3:
-                    $('#monitor_flow3').val(value);
+                    val = parseFloat(value).toFixed(1);
+                    $("#monitor_flow3").text(val);
                     break;
                 case light.MapResource.WaterFlow4:
-                    $('#monitor_flow4').val(value);
+                    val = parseFloat(value).toFixed(1);
+                    $("#monitor_flow4").text(val);
                     break;
                 case light.MapResource.WaterFlow5:
-                    $('#monitor_flow5').val(value);
+                    val = parseFloat(value).toFixed(1);
+                    $("#monitor_flow5").text(val);
                     break;
                 case light.MapResource.WaterVolume1:
-                    $('#monitor_volume1').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    if(val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if(val >= 100) val = parseFloat(value).toFixed(1);
+                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    $("#monitor_volume1").text(val);
                     break;
                 case light.MapResource.WaterVolume2:
-                    $('#monitor_volume2').val(value);
+                    val = parseFloat(value).toFixed(3);
+                    val = parseFloat(value).toFixed(3);
+                    if(val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if(val >= 100) val = parseFloat(value).toFixed(1);
+                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    $("#monitor_volume2").text(val);
                     break;
                 default:
                     break;
             }
-        }
-    }
 
-    Light.prototype.command_onoff_relayAC = function () {
-        var isChecked = $('#monitor_relay_ac').prop("checked");
-        var resource = light.MapResource.RelayAC;
-        var body = {
-            [resource]: isChecked ? 1 : 0
-        };
-
-        console.log(JSON.stringify(body));
-        $.ajax({
-            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/command/' + light.MapCommand.RelayAC,
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(body),
-            dataType: 'text',
-            success: function (data) {
-                light.monitor_get_data();
-            },
-            error: function () {
-                $('#monitor_relay_ac').bootstrapToggle(isChecked ? "off" : "on");
+            // xu ly so sanh TDS
+            let tds1_color = tds2_color= tds3_color = tds4_color = "white";
+            if(tds4 > 30) {
+                tds4_color = "red";
             }
-        });
-    }
 
-    Light.prototype.command_onoff_bom_relay1 = function () {
-        var isChecked = $('#monitor_relay_ac').prop("checked");
-        if (!isChecked) {
-            alert("Không thể thực hiện do thiết bị chưa được bật nguồn!");
-            return;
-        }
-
-        isChecked = $('#monitor_relay1').prop("checked");
-        var body = {
-            [light.MapResource.Bom]: isChecked ? 1 : 0,
-            [light.MapResource.Relay1]: isChecked ? 1 : 0
-        };
-
-        console.log(JSON.stringify(body));
-        $.ajax({
-            url: '/core-command/api/v2/device/name/' + light.currentSelectDevice + '/command/' + light.MapCommand.BomRelay1,
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(body),
-            dataType: 'text',
-            success: function (data) {
-                light.monitor_get_data();
-            }, error: function () {
-                $('#monitor_relay1').bootstrapToggle(isChecked ? "off" : "on");
+            if(tds3 >= 0.6*tds2) {
+                tds2_color = tds3_color = "red";
             }
-        });
+
+            if(tds2 >= 0.6*tds1) {
+                tds1_color = tds2_color = "red";
+            }
+
+            $("#monitor_tds1").css("color", tds1_color);
+            $("#monitor_tds2").css("color", tds2_color);
+            $("#monitor_tds3").css("color", tds3_color);
+            $("#monitor_tds4").css("color", tds4_color);
+        }
     }
 
     // Command end  -----------------------------------------
@@ -338,32 +338,3 @@ lightApp = (function () {
     return light;
 
 })();
-
-var i = 1;
-function btn_first() {
-    var property = document.getElementById('button_first');
-    if (i == 0) {
-        property.style.backgroundColor = "#82b74b"
-        $('#button_first').text('BẬT');
-        i = 1;
-    }
-    else {
-        property.style.backgroundColor = "#c94c4c"
-        $('#button_first').text('TẮT');
-        i = 0;
-    }
-}
-
-var j = 1;
-function btn_second() {
-    console.log("btn_first");
-    var property = document.getElementById('button_second');
-    if (j == 0) {
-        property.style.backgroundColor = "#80ced6"
-        j = 1;
-    }
-    else {
-        property.style.backgroundColor = "#f18973"
-        j = 0;
-    }
-}
