@@ -338,3 +338,25 @@ lightApp = (function () {
     return light;
 
 })();
+
+function relayAC_state(state) {
+    var property = document.getElementById('monitor_relay_ac');
+    if (state == true) {
+        property.style.backgroundColor = "#82b74b"
+        $('#monitor_relay_ac').text('BẬT');
+    }
+    else {
+        property.style.backgroundColor = "#c94c4c"
+        $('#monitor_relay_ac').text('TẮT');
+    }
+}
+
+function relayXa_state(state) {
+    var property = document.getElementById('monitor_relay1');
+    if (state == true) {
+        property.style.backgroundColor = "#80ced6"
+    }
+    else {
+        property.style.backgroundColor = "#f18973"
+    }
+}
