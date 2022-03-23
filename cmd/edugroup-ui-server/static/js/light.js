@@ -392,7 +392,7 @@ lightApp = (function () {
             var resource = reading.resourceName;
             var value = reading.value;
             let val = 0;
-            let tds1 = tds2 = tds3 = tds4 = 0;
+            let tds1 = 0, tds2 = 0, tds3 = 0, tds4 = 0;
 
             switch (resource) {
                 case light.MapResource.Apcao1:
@@ -440,7 +440,7 @@ lightApp = (function () {
                 case light.MapResource.RelayAC:
                     if (value == "0") {
                         this.currentRelayACState = false;
-                    } else { this.currentRelayACState = true};
+                    } else { this.currentRelayACState = true };
                     relayAC_state(this.currentRelayACState);
                     break;
                 case light.MapResource.PowerI:
@@ -449,16 +449,16 @@ lightApp = (function () {
                     break;
                 case light.MapResource.PowerKw:
                     val = parseFloat(value).toFixed(3);
-                    if(val >= 1000) val = parseFloat(value).toFixed(0)
-                    else if(val >= 100) val = parseFloat(value).toFixed(1);
-                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    if (val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if (val >= 100) val = parseFloat(value).toFixed(1);
+                    else if (val >= 10) val = parseFloat(value).toFixed(2);
                     $("#monitor_power_kw").text(val);
                     break;
                 case light.MapResource.PowerKwh:
                     val = parseFloat(value).toFixed(3);
-                    if(val >= 1000) val = parseFloat(value).toFixed(0)
-                    else if(val >= 100) val = parseFloat(value).toFixed(1);
-                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    if (val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if (val >= 100) val = parseFloat(value).toFixed(1);
+                    else if (val >= 10) val = parseFloat(value).toFixed(2);
                     $("#monitor_power_kwh").text(val);
                     break;
                 case light.MapResource.PowerU:
@@ -506,17 +506,17 @@ lightApp = (function () {
                     break;
                 case light.MapResource.WaterVolume1:
                     val = parseFloat(value).toFixed(3);
-                    if(val >= 1000) val = parseFloat(value).toFixed(0)
-                    else if(val >= 100) val = parseFloat(value).toFixed(1);
-                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    if (val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if (val >= 100) val = parseFloat(value).toFixed(1);
+                    else if (val >= 10) val = parseFloat(value).toFixed(2);
                     $("#monitor_volume1").text(val);
                     break;
                 case light.MapResource.WaterVolume2:
                     val = parseFloat(value).toFixed(3);
                     val = parseFloat(value).toFixed(3);
-                    if(val >= 1000) val = parseFloat(value).toFixed(0)
-                    else if(val >= 100) val = parseFloat(value).toFixed(1);
-                    else if(val >= 10) val = parseFloat(value).toFixed(2);
+                    if (val >= 1000) val = parseFloat(value).toFixed(0)
+                    else if (val >= 100) val = parseFloat(value).toFixed(1);
+                    else if (val >= 10) val = parseFloat(value).toFixed(2);
                     $("#monitor_volume2").text(val);
                     break;
                 default:
@@ -524,16 +524,16 @@ lightApp = (function () {
             }
 
             // xu ly so sanh TDS
-            let tds1_color = tds2_color= tds3_color = tds4_color = "white";
-            if(tds4 > 30) {
+            let tds1_color = "white", tds2_color = "white", tds3_color = "white",  tds4_color = "white";
+            if (tds4 > 30) {
                 tds4_color = "red";
             }
 
-            if(tds3 >= 0.6*tds2) {
+            if (tds3 >= 0.6 * tds2) {
                 tds2_color = tds3_color = "red";
             }
 
-            if(tds2 >= 0.6*tds1) {
+            if (tds2 >= 0.6 * tds1) {
                 tds1_color = tds2_color = "red";
             }
 

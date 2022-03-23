@@ -181,7 +181,7 @@ lightApp = (function () {
             var resource = reading.resourceName;
             var value = reading.value;
             let val = 0;
-            let tds1 = tds2 = tds3 = tds4 = 0;
+            let tds1 = 0, tds2 = 0, tds3 = 0, tds4 = 0;
 
             switch (resource) {
                 case light.MapResource.Apcao1:
@@ -313,7 +313,7 @@ lightApp = (function () {
             }
 
             // xu ly so sanh TDS
-            let tds1_color = tds2_color= tds3_color = tds4_color = "white";
+            let tds1_color = "white", tds2_color = "white", tds3_color = "white",  tds4_color = "white";
             if(tds4 > 30) {
                 tds4_color = "red";
             }

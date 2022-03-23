@@ -1,13 +1,13 @@
 [Service]
 Host = "localhost"
-Port = 5000
+Port = 5555
 Labels = []
 OpenMsg = "edgeX ui started"
 StaticResourcesPath = "./static"
 
 #Using an default memory db automatically if not configed here.
 [Database]
-Host = "172.17.0.1"
+Host = "localhost"
 Name = "edugroup-ui-go"
 Port = 27017
 Username = "su"
