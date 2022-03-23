@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-.PHONY: build clean test run docker
+.PHONY: build clean test run docker docker-push
 
 GO=CGO_ENABLED=0 GO111MODULE=on go
 GOCGO=CGO_ENABLED=1 GO111MODULE=on go
@@ -45,4 +45,8 @@ run:
 docker: $(DOCKERS)
 
 docker_edugroup_ui_go:
-	docker build --label "git_sha=$(GIT_SHA)" -t edugroupfoundry/docker-edugroup-ui-go:$(VERSION) .
+	docker build --label "git_sha=$(GIT_SHA)" -t phanvanhai/edugroup-ui-go:$(VERSION) .
+
+docker-push:
+	docker push \
+	phanvanhai/edugroup-ui-go:$(VERSION)
