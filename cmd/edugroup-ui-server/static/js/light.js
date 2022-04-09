@@ -62,7 +62,7 @@ lightApp = (function () {
         this.currentProtocols = null;
         this.currentDescription = "";
         this.monitorTimer = null;
-        this.intervalMonitor = 5000;
+        this.intervalMonitor = 10000;
 
         this.currentRelayACState = true;
         this.currentRelayXaState = false;
